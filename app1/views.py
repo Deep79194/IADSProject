@@ -7,3 +7,7 @@ from django.shortcuts import render
 
 def index(request):
     return HttpResponse("<p>This is initialization of Project.</p>")
+
+
+def about(request):
+    return HttpResponse("<p>This is initialization of Project.</p>")
