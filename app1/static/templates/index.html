@@ -56,12 +56,12 @@
 						<!-- menu start -->
 						<nav class="main-menu">
 							<ul>
-								<li class="current-list-item"><a href="#">Home</a></li>
-								<li><a href="#">Neel</a></li>
-								<li><a href="#">Pages</a></li>
+								<li class="current-list-item"><a href="{% url 'home' %}">>Home</a></li>
+								<li><a href="{% url 'about' %}">About</a></li>
+<!--								<li><a href="#">Pages</a></li>-->
 								<li><a href="#">News</a></li>
-								<li><a href="#">Contact</a></li>
-								<li><a href="#">Shop</a></li>
+								<li><a href="{% url 'contact' %}">Contact</a></li>
+								<li><a href="{% url 'shop' %}">Shop</a></li>
 								<li>
 									<div class="header-icons">
 										<a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
@@ -100,7 +100,7 @@
 	<!-- end search area -->
 
 	<!-- hero area -->
-	<div class="hero-area hero-bg">
+	<div class="hero-area hero-bg ">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-9 offset-lg-2 text-center">
@@ -489,11 +489,11 @@
 					<div class="footer-box pages">
 						<h2 class="widget-title">Pages</h2>
 						<ul>
-							<li><a href="#">Home</a></li>
-							<li><a href="#">About</a></li>
+							<li><a href="{% url 'home' %}">Home</a></li>
+							<li><a href="{% url 'about' %}">About</a></li>
 							<li><a href="#">Shop</a></li>
 							<li><a href="#">News</a></li>
-							<li><a href="#">Contact</a></li>
+							<li><a href="{% url 'contact' %}">Contact</a></li>
 						</ul>
 					</div>
 				</div>
