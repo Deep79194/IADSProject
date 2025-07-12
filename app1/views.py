@@ -11,3 +11,7 @@ def index(request):
 
 def about(request):
     return HttpResponse("<p>This is initialization of Project.</p>")
+
+
+def home(request):
+    return render(request, 'index.html')
