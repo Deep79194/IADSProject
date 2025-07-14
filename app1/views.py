@@ -24,3 +24,16 @@ def contact(request):
 
 def shop(request):
     return render(request, 'shop.html')
+
+
+def login(request):
+    return render(request, 'login.html')
+
+def signup(request):
+    return render(request, 'signup.html')
+
+def forgotpwd(request):
+    return render(request, 'forgotpwd.html')
+
+def cart(request):
+    return render(request, 'cart.html')
