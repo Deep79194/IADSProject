@@ -134,6 +134,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+AUTH_USER_MODEL = 'app1.User'
 
 # Quick-start development settings - unsuitable for production
 SECRET_KEY = 'django-insecure-466s!e9#=m3hq5sj*fz8)_lx5(3d(zpcl^@))(uu6kl_t7lrxr'
@@ -211,7 +212,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # <-- This is where your 'assets' folder lives
+# STATICFILES_DIRS = [BASE_DIR / 'static']  # <-- This is where your 'assets' folder lives
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Will create this directory next
+]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Media files configuration (for profile pictures)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

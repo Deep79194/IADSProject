@@ -1,17 +1,12 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .forms import SimpleSignupForm, UserLoginForm  # We'll create this next
+from .models import ContactSubmission
+
 
 # Create your views here.
-
-
-
-def index(request):
-    return HttpResponse("<p>This is initialization of Project.</p>")
-
-
-def about(request):
-    return HttpResponse("<p>This is initialization of Project.</p>")
-
 
 def home(request):
     return render(request, 'index.html')
@@ -26,14 +21,86 @@ def shop(request):
     return render(request, 'shop.html')
 
 
-def login(request):
-    return render(request, 'login.html')
+# def login(request):
+#     return render(request, 'login.html')
+#
+# def signup(request):
+#     return render(request, 'signup.html')
+#
+# def forgotpwd(request):
+#     return render(request, 'forgotpwd.html')
 
-def signup(request):
-    return render(request, 'signup.html')
+def cart(request):
+    return render(request, 'cart.html')
+
+
+# Updated authentication views
+def login_view(request):
+    if request.method == 'POST':
+        form = UserLoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Welcome back, {username}!')
+                next_url = request.GET.get('next', 'home')  # Redirect to 'next' or home
+                return redirect(next_url)
+        messages.error(request, 'Invalid username or password')
+    else:
+        form = UserLoginForm()
+
+    context = {
+        'form': form,
+        'title': 'Login'
+    }
+    return render(request, 'login.html', context)
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SimpleSignupForm(request.POST)
+        if form.is_valid():
+            try:
+                user = form.save()
+                login(request, user)
+                return redirect('home')  # Replace with your home URL name
+            except IntegrityError:
+                form.add_error('username', 'This username is already taken')
+    else:
+        form = SimpleSignupForm()
+
+    return render(request, 'signup.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You have been logged out.')
+    return redirect('home')
 
 def forgotpwd(request):
     return render(request, 'forgotpwd.html')
 
-def cart(request):
-    return render(request, 'cart.html')
+
+def contact_view(request):
+    if request.method == 'POST':
+        # Get form data from request
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        # Save to database
+        ContactSubmission.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            subject=subject,
+            message=message
+        )
+
+        messages.success(request, 'Your message has been sent successfully!')
+        return redirect('contact')  # Redirect back to contact page
+
+    return render(request, 'contact.html')

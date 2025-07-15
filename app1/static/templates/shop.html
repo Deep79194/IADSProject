@@ -1,229 +1,437 @@
+{% extends 'base.html' %}
+
+<!--{% load static %}-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--	<meta charset="UTF-8">-->
+<!--	<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--	<meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--	<title>Shop</title>-->
+
+<!--	&lt;!&ndash; favicon &ndash;&gt;-->
+<!--	<link rel="shortcut icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">-->
+<!--	&lt;!&ndash; google fonts &ndash;&gt;-->
+<!--	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">-->
+<!--	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">-->
+<!--	&lt;!&ndash; fontawesome &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">-->
+<!--	&lt;!&ndash; bootstrap &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">-->
+<!--	&lt;!&ndash; owl carousel &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.css' %}">-->
+<!--	&lt;!&ndash; magnific popup &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">-->
+<!--	&lt;!&ndash; animate css &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">-->
+<!--	&lt;!&ndash; mean menu css &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">-->
+<!--	&lt;!&ndash; main style &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">-->
+<!--	&lt;!&ndash; responsive &ndash;&gt;-->
+<!--	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">-->
+<!--</head>-->
+<!--<body>-->
+
+<!--	{% comment %} Preloader {% endcomment %}-->
+<!--    <div class="loader">-->
+<!--        <div class="loader-inner">-->
+<!--            <div class="circle"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--	&lt;!&ndash; header &ndash;&gt;-->
+<!--	<div class="top-header-area" id="sticker">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-lg-12 col-sm-12 text-center">-->
+<!--					<div class="main-menu-wrap">-->
+<!--						&lt;!&ndash; logo &ndash;&gt;-->
+<!--						<div class="site-logo">-->
+<!--							<a href="{% url 'home' %}">-->
+<!--								<img src="{% static 'assets/img/logo.png' %}" alt="Logo">-->
+<!--							</a>-->
+<!--						</div>-->
+<!--						&lt;!&ndash; menu start &ndash;&gt;-->
+<!--						<nav class="main-menu">-->
+<!--							<ul>-->
+<!--								<li><a href="{% url 'home' %}">Home</a></li>-->
+<!--								<li><a href="{% url 'about' %}">About</a></li>-->
+<!--								<li><a href="#">News</a></li>-->
+<!--								<li><a href="{% url 'contact' %}">Contact</a></li>-->
+<!--								<li><a href="{% url 'shop' %}">Shop</a></li>-->
+
+<!--							</ul>-->
+<!--						</nav>-->
+<!--						<div class="mobile-menu"></div>-->
+<!--						&lt;!&ndash; menu end &ndash;&gt;-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	&lt;!&ndash; end header &ndash;&gt;-->
+
+<!--	&lt;!&ndash; breadcrumb-section &ndash;&gt;-->
+<!--	<div class="breadcrumb-section breadcrumb-bg">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-lg-8 offset-lg-2 text-center">-->
+<!--					<div class="breadcrumb-text">-->
+<!--						<p>Fresh and Organic</p>-->
+<!--						<h1>Shop</h1>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	&lt;!&ndash; products &ndash;&gt;-->
+<!--	<div class="product-section mt-150 mb-150">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-md-12">-->
+<!--					<div class="product-filters">-->
+<!--						<ul>-->
+<!--							<li class="active" data-filter="*">All</li>-->
+<!--							<li data-filter=".strawberry">Strawberry</li>-->
+<!--							<li data-filter=".berry">Berry</li>-->
+<!--							<li data-filter=".lemon">Lemon</li>-->
+<!--						</ul>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+
+<!--			<div class="row product-lists">-->
+<!--				&lt;!&ndash; Example product &ndash;&gt;-->
+<!--				<div class="col-lg-4 col-md-6 text-center strawberry">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Strawberry</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> $85</p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				&lt;!&ndash; Repeat products as needed &ndash;&gt;-->
+<!--				<div class="col-lg-4 col-md-6 text-center strawberry">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Strawberry</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> 85$ </p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-4 col-md-6 text-center berry">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-2.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Berry</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> 70$ </p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-4 col-md-6 text-center lemon">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-3.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Lemon</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> 35$ </p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-4 col-md-6 text-center">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-4.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Avocado</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> 50$ </p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-4 col-md-6 text-center">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-5.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Green Apple</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> 45$ </p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-4 col-md-6 text-center strawberry">-->
+<!--					<div class="single-product-item">-->
+<!--						<div class="product-image">-->
+<!--							<a href="#"><img src="{% static 'assets/img/products/product-img-6.jpg' %}" alt=""></a>-->
+<!--						</div>-->
+<!--						<h3>Strawberry</h3>-->
+<!--						<p class="product-price"><span>Per Kg</span> 80$ </p>-->
+<!--						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+
+<!--			<div class="row">-->
+<!--				<div class="col-lg-12 text-center">-->
+<!--					<div class="pagination-wrap">-->
+<!--						<ul>-->
+<!--							<li><a href="#">Prev</a></li>-->
+<!--							<li><a href="#">1</a></li>-->
+<!--							<li><a class="active" href="#">2</a></li>-->
+<!--							<li><a href="#">3</a></li>-->
+<!--							<li><a href="#">Next</a></li>-->
+<!--						</ul>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	&lt;!&ndash; end products &ndash;&gt;-->
+
+<!--	&lt;!&ndash; logo carousel &ndash;&gt;-->
+<!--	<div class="logo-carousel-section">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-lg-12">-->
+<!--					<div class="logo-carousel-inner">-->
+<!--						<div class="single-logo-item">-->
+<!--							<img src="{% static 'assets/img/company-logos/1.png' %}" alt="">-->
+<!--						</div>-->
+<!--						&lt;!&ndash; Add more logos if needed &ndash;&gt;-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	&lt;!&ndash; footer &ndash;&gt;-->
+<!--	<div class="footer-area">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-lg-3 col-md-6">-->
+<!--					<div class="footer-box about-widget">-->
+<!--						<h2 class="widget-title">About Us</h2>-->
+<!--						<p>Short about text for your project here.</p>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-3 col-md-6">-->
+<!--					<div class="footer-box get-in-touch">-->
+<!--						<h2 class="widget-title">Get in Touch</h2>-->
+<!--						<ul>-->
+<!--							<li>123 Green Street</li>-->
+<!--							<li>info@example.com</li>-->
+<!--							<li>+00 111 222 3333</li>-->
+<!--						</ul>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-3 col-md-6">-->
+<!--					<div class="footer-box pages">-->
+<!--						<h2 class="widget-title">Pages</h2>-->
+<!--						<ul>-->
+<!--							<li><a href="{% url 'home' %}">Home</a></li>-->
+<!--							<li><a href="{% url 'about' %}">About</a></li>-->
+<!--							<li><a href="{% url 'shop' %}">Shop</a></li>-->
+<!--							<li><a href="{% url 'contact' %}">Contact</a></li>-->
+<!--						</ul>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-3 col-md-6">-->
+<!--					<div class="footer-box subscribe">-->
+<!--						<h2 class="widget-title">Subscribe</h2>-->
+<!--						<p>Subscribe for updates.</p>-->
+<!--						<form action="#">-->
+<!--							<input type="email" placeholder="Email">-->
+<!--							<button type="submit"><i class="fas fa-paper-plane"></i></button>-->
+<!--						</form>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	&lt;!&ndash; copyright &ndash;&gt;-->
+<!--	<div class="copyright">-->
+<!--		<div class="container">-->
+<!--			<div class="row">-->
+<!--				<div class="col-lg-6 col-md-12">-->
+<!--					<p>&copy; 2025 Your Project. All Rights Reserved.</p>-->
+<!--				</div>-->
+<!--				<div class="col-lg-6 text-right col-md-12">-->
+<!--					<div class="social-icons">-->
+<!--						<ul>-->
+<!--							<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>-->
+<!--							<li><a href="#"><i class="fab fa-twitter"></i></a></li>-->
+<!--							<li><a href="#"><i class="fab fa-instagram"></i></a></li>-->
+<!--							<li><a href="#"><i class="fab fa-linkedin"></i></a></li>-->
+<!--						</ul>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	&lt;!&ndash; scripts &ndash;&gt;-->
+<!--	<script src="{% static 'assets/js/jquery-1.11.3.min.js' %}"></script>-->
+<!--	<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/jquery.countdown.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/jquery.isotope-3.0.6.min.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/waypoints.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/sticker.js' %}"></script>-->
+<!--	<script src="{% static 'assets/js/main.js' %}"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Shop</title>
 
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
-	<!-- google fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.css' %}">
-	<!-- magnific popup -->
-	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
-	<!-- animate css -->
-	<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
-	<!-- main style -->
-	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
-	<!-- responsive -->
-	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
-</head>
-<body>
+{% block title %}Shop - Fruitkha{% endblock %}
 
-	{% comment %} Preloader {% endcomment %}
-    <div class="loader">
-        <div class="loader-inner">
-            <div class="circle"></div>
+{% block content %}
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>Fresh and Organic</p>
+                        <h1>Shop</h1>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-	<!-- header -->
-	<div class="top-header-area" id="sticker">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
-					<div class="main-menu-wrap">
-						<!-- logo -->
-						<div class="site-logo">
-							<a href="{% url 'home' %}">
-								<img src="{% static 'assets/img/logo.png' %}" alt="Logo">
-							</a>
-						</div>
-						<!-- menu start -->
-						<nav class="main-menu">
-							<ul>
-								<li><a href="{% url 'home' %}">Home</a></li>
-								<li><a href="{% url 'about' %}">About</a></li>
-								<li><a href="#">News</a></li>
-								<li><a href="{% url 'contact' %}">Contact</a></li>
-								<li><a href="{% url 'shop' %}">Shop</a></li>
+    <!-- products -->
+    <div class="product-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-filters">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+                            <li data-filter=".strawberry">Strawberry</li>
+                            <li data-filter=".berry">Berry</li>
+                            <li data-filter=".lemon">Lemon</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-							</ul>
-						</nav>
-						<div class="mobile-menu"></div>
-						<!-- menu end -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end header -->
+            <div class="row product-lists">
+                <!-- Example product -->
+                <div class="col-lg-4 col-md-6 text-center strawberry">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt="Strawberry"></a>
+                        </div>
+                        <h3>Strawberry</h3>
+                        <p class="product-price"><span>Per Kg</span> $85</p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+                <!-- Repeat products as needed -->
+                <div class="col-lg-4 col-md-6 text-center strawberry">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt="Strawberry"></a>
+                        </div>
+                        <h3>Strawberry</h3>
+                        <p class="product-price"><span>Per Kg</span> 85$ </p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 text-center berry">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-2.jpg' %}" alt="Berry"></a>
+                        </div>
+                        <h3>Berry</h3>
+                        <p class="product-price"><span>Per Kg</span> 70$ </p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 text-center lemon">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-3.jpg' %}" alt="Lemon"></a>
+                        </div>
+                        <h3>Lemon</h3>
+                        <p class="product-price"><span>Per Kg</span> 35$ </p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 text-center">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-4.jpg' %}" alt="Avocado"></a>
+                        </div>
+                        <h3>Avocado</h3>
+                        <p class="product-price"><span>Per Kg</span> 50$ </p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 text-center">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-5.jpg' %}" alt="Green Apple"></a>
+                        </div>
+                        <h3>Green Apple</h3>
+                        <p class="product-price"><span>Per Kg</span> 45$ </p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 text-center strawberry">
+                    <div class="single-product-item">
+                        <div class="product-image">
+                            <a href="#"><img src="{% static 'assets/img/products/product-img-6.jpg' %}" alt="Strawberry"></a>
+                        </div>
+                        <h3>Strawberry</h3>
+                        <p class="product-price"><span>Per Kg</span> 80$ </p>
+                        <a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    </div>
+                </div>
+            </div>
 
-	<!-- breadcrumb-section -->
-	<div class="breadcrumb-section breadcrumb-bg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="breadcrumb-text">
-						<p>Fresh and Organic</p>
-						<h1>Shop</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="pagination-wrap">
+                        <ul>
+                            <li><a href="#">Prev</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a class="active" href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">Next</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end products -->
 
-	<!-- products -->
-	<div class="product-section mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="product-filters">
-						<ul>
-							<li class="active" data-filter="*">All</li>
-							<li data-filter=".strawberry">Strawberry</li>
-							<li data-filter=".berry">Berry</li>
-							<li data-filter=".lemon">Lemon</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-
-			<div class="row product-lists">
-				<!-- Example product -->
-				<div class="col-lg-4 col-md-6 text-center strawberry">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="#"><img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt=""></a>
-						</div>
-						<h3>Strawberry</h3>
-						<p class="product-price"><span>Per Kg</span> $85</p>
-						<a href="#" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div>
-				<!-- Repeat products as needed -->
-			</div>
-
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					<div class="pagination-wrap">
-						<ul>
-							<li><a href="#">Prev</a></li>
-							<li><a href="#">1</a></li>
-							<li><a class="active" href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">Next</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end products -->
-
-	<!-- logo carousel -->
-	<div class="logo-carousel-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="logo-carousel-inner">
-						<div class="single-logo-item">
-							<img src="{% static 'assets/img/company-logos/1.png' %}" alt="">
-						</div>
-						<!-- Add more logos if needed -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- footer -->
-	<div class="footer-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title">About Us</h2>
-						<p>Short about text for your project here.</p>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Get in Touch</h2>
-						<ul>
-							<li>123 Green Street</li>
-							<li>info@example.com</li>
-							<li>+00 111 222 3333</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box pages">
-						<h2 class="widget-title">Pages</h2>
-						<ul>
-							<li><a href="{% url 'home' %}">Home</a></li>
-							<li><a href="{% url 'about' %}">About</a></li>
-							<li><a href="{% url 'shop' %}">Shop</a></li>
-							<li><a href="{% url 'contact' %}">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box subscribe">
-						<h2 class="widget-title">Subscribe</h2>
-						<p>Subscribe for updates.</p>
-						<form action="#">
-							<input type="email" placeholder="Email">
-							<button type="submit"><i class="fas fa-paper-plane"></i></button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- copyright -->
-	<div class="copyright">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<p>&copy; 2025 Your Project. All Rights Reserved.</p>
-				</div>
-				<div class="col-lg-6 text-right col-md-12">
-					<div class="social-icons">
-						<ul>
-							<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-							<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-							<li><a href="#"><i class="fab fa-instagram"></i></a></li>
-							<li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- scripts -->
-	<script src="{% static 'assets/js/jquery-1.11.3.min.js' %}"></script>
-	<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'assets/js/jquery.countdown.js' %}"></script>
-	<script src="{% static 'assets/js/jquery.isotope-3.0.6.min.js' %}"></script>
-	<script src="{% static 'assets/js/waypoints.js' %}"></script>
-	<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
-	<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
-	<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
-	<script src="{% static 'assets/js/sticker.js' %}"></script>
-	<script src="{% static 'assets/js/main.js' %}"></script>
-</body>
-</html>
+    <!-- logo carousel -->
+    <div class="logo-carousel-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner">
+                        <div class="single-logo-item">
+                            <img src="{% static 'assets/img/company-logos/1.png' %}" alt="Partner Logo">
+                        </div>
+                        <!-- Add more logos if needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
