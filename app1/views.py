@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import SimpleSignupForm, UserLoginForm  # We'll create this next
-from .models import ContactSubmission,Product
+from django.urls import reverse_lazy
 
+from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm # We'll create this next
+from .models import ContactSubmission,Product,User
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.views import PasswordChangeView
 
 # Create your views here.
 
@@ -42,6 +45,19 @@ def shop(request):
 
 def cart(request):
     return render(request, 'cart.html')
+
+# product view
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:3]
+
+    context = {
+        'product': product,
+        'related_products': related_products
+    }
+    return render(request, 'single_product.html', context)
+
+
 
 
 # Updated authentication views
@@ -145,3 +161,22 @@ def contact_view(request):
         return redirect('contact')  # Redirect back to contact page
 
     return render(request, 'contact.html')
+
+
+@login_required
+def account(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been updated!')
+            return redirect('account')
+    else:
+        form = UserUpdateForm(instance=request.user)
+
+    return render(request, 'account.html', {'form': form})
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'password_change.html'
+    success_url = reverse_lazy('account')
