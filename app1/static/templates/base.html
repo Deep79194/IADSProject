@@ -59,16 +59,43 @@
                                 <li class="{% if '/news/' in request.path %}current-list-item{% endif %}"><a href="#">News</a></li>
                                 <li class="{% if request.path == '/contact/' %}current-list-item{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
                                 <li class="{% if request.path == '/shop/' %}current-list-item{% endif %}"><a href="{% url 'shop' %}">Shop</a></li>
-                                <li>
+<!--                                <li>-->
+<!--                                    <div class="header-icons">-->
+<!--                                        <a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>-->
+<!--                                        <li><a class="shopping-cart-1" href="#"><i class="fas fa-user"></i></a>-->
+<!--											<ul class="sub-menu">-->
+<!--												<li><a href="{% url 'signup' %}">Signup</a></li>-->
+<!--												<li><a href="{% url 'login' %}">Signin</a></li>-->
+
+<!--											</ul>-->
+<!--										</li>-->
+<!--                                        <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+                               <li>
                                     <div class="header-icons">
                                         <a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
-                                        <li><a class="shopping-cart-1" href="#"><i class="fas fa-user"></i></a>
-											<ul class="sub-menu">
-												<li><a href="{% url 'signup' %}">Signup</a></li>
-												<li><a href="{% url 'login' %}">Signin</a></li>
-
-											</ul>
-										</li>
+                                        {% if user.is_authenticated %}
+                                            <li class="user-dropdown">
+                                                <a class="shopping-cart-1" href="#">
+                                                    <i class="fas fa-user"></i>
+                                                    <span class="username">{{ user.first_name }}</span>
+                                                </a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="#">My Account</a></li>
+                                                    <li><a href="#">My Orders</a></li>
+                                                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                                                </ul>
+                                            </li>
+                                        {% else %}
+                                            <li>
+                                                <a class="shopping-cart-1" href="#"><i class="fas fa-user"></i></a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                                                    <li><a href="{% url 'login' %}">Signin</a></li>
+                                                </ul>
+                                            </li>
+                                        {% endif %}
                                         <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                                     </div>
                                 </li>

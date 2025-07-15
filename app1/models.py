@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.core.mail import send_mail
-
+from django.utils.text import slugify
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, first_name, last_name, password=None, **extra_fields):
@@ -127,3 +127,28 @@ class ContactSubmission(models.Model):
 
     def __str__(self):
         return f"{self.subject} - {self.name}"
+
+
+# product's model
+
+class Product(models.Model):
+    CATEGORY_CHOICES = [
+        ('strawberry', 'Strawberry'),
+        ('berry', 'Berry'),
+        ('lemon', 'Lemon'),
+        ('other', 'Other'),
+    ]
+
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    image = models.ImageField(upload_to='products/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name

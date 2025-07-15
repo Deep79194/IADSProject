@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import SimpleSignupForm, UserLoginForm  # We'll create this next
-from .models import ContactSubmission
+from .models import ContactSubmission,Product
 
 
 # Create your views here.
@@ -17,9 +17,19 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def shop(request):
-    return render(request, 'shop.html')
+# def shop(request):
+#     return render(request, 'shop.html')
 
+
+def shop(request):
+    products = Product.objects.all()
+    categories = dict(Product.CATEGORY_CHOICES)
+
+    context = {
+        'products': products,
+        'categories': categories,
+    }
+    return render(request, 'shop.html', context)
 
 # def login(request):
 #     return render(request, 'login.html')
@@ -35,48 +45,79 @@ def cart(request):
 
 
 # Updated authentication views
+# def login_view(request):
+#     if request.method == 'POST':
+#         form = UserLoginForm(request, data=request.POST)
+#         if form.is_valid():
+#             username = form.cleaned_data.get('username')
+#             password = form.cleaned_data.get('password')
+#             user = authenticate(username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 messages.success(request, f'Welcome back, {username}!')
+#                 next_url = request.GET.get('next', 'home')  # Redirect to 'next' or home
+#                 return redirect(next_url)
+#         messages.error(request, 'Invalid username or password')
+#     else:
+#         form = UserLoginForm()
+#
+#     context = {
+#         'form': form,
+#         'title': 'Login'
+#     }
+#     return render(request, 'login.html', context)
+#
+#
+# def signup_view(request):
+#     if request.method == 'POST':
+#         form = SimpleSignupForm(request.POST)
+#         if form.is_valid():
+#             try:
+#                 user = form.save()
+#                 login(request, user)
+#                 return redirect('home')  # Replace with your home URL name
+#             except IntegrityError:
+#                 form.add_error('username', 'This username is already taken')
+#     else:
+#         form = SimpleSignupForm()
+#
+#     return render(request, 'signup.html', {'form': form})
+#
+# def logout_view(request):
+#     logout(request)
+#     messages.success(request, 'You have been logged out.')
+#     return redirect('home')
+
+
 def login_view(request):
     if request.method == 'POST':
         form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {username}!')
-                next_url = request.GET.get('next', 'home')  # Redirect to 'next' or home
-                return redirect(next_url)
-        messages.error(request, 'Invalid username or password')
+            user = form.get_user()
+            login(request, user)  # This creates the session
+            messages.success(request, f"Welcome back, {user.first_name}!")
+            return redirect('home')
     else:
         form = UserLoginForm()
-
-    context = {
-        'form': form,
-        'title': 'Login'
-    }
-    return render(request, 'login.html', context)
-
+    return render(request, 'login.html', {'form': form})
 
 def signup_view(request):
     if request.method == 'POST':
         form = SimpleSignupForm(request.POST)
         if form.is_valid():
-            try:
-                user = form.save()
-                login(request, user)
-                return redirect('home')  # Replace with your home URL name
-            except IntegrityError:
-                form.add_error('username', 'This username is already taken')
+            user = form.save()
+            login(request, user)  # Log the user in after signup
+            messages.success(request, f"Account created for {user.first_name}!")
+            return redirect('home')
     else:
         form = SimpleSignupForm()
-
     return render(request, 'signup.html', {'form': form})
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'You have been logged out.')
+    messages.success(request, "You've been logged out successfully.")
     return redirect('home')
+
 
 def forgotpwd(request):
     return render(request, 'forgotpwd.html')
