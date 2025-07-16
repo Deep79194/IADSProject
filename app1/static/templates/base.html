@@ -74,7 +74,13 @@
 <!--                                </li>-->
                                <li>
                                     <div class="header-icons">
-                                        <a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
+<!--                                        <a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>-->
+                                        <a class="shopping-cart" href="{% url 'cart' %}">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            {% if user.is_authenticated %}
+                                                <span class="cart-count">{{ user.cart.items.count }}</span>
+                                            {% endif %}
+                                        </a>
                                         {% if user.is_authenticated %}
                                             <li class="user-dropdown">
                                                 <a class="shopping-cart-1" href="#">

@@ -451,7 +451,7 @@
                                     ${{ product.price }}
                                 {% endif %}
                             </p>
-                            <a href="{% url 'cart' %}" class="cart-btn">
+                            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
                                 <i class="fas fa-shopping-cart"></i> Add to Cart
                             </a>
                         </div>

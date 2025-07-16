@@ -2870,3 +2870,24 @@ table.order-details tbody td {
     justify-content: space-between;
     align-items: center;
 }
+
+
+/* Cart counter styles */
+.shopping-cart {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #F28123;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
