@@ -7,6 +7,7 @@ from django.utils.text import slugify
 from django.conf import settings
 from decimal import Decimal
 
+
 class UserManager(BaseUserManager):
     def create_user(self, email, username, first_name, last_name, password=None, **extra_fields):
         """

@@ -89,7 +89,7 @@
                                                 </a>
                                                 <ul class="sub-menu">
                                                     <li><a href="{% url 'account' %}">My Account</a></li>
-                                                    <li><a href="#">My Orders</a></li>
+                                                    <li><a href="{% url 'checkout' %}">My Orders</a></li>
                                                     <li><a href="{% url 'logout' %}">Logout</a></li>
                                                 </ul>
                                             </li>
@@ -116,7 +116,31 @@
         </div>
     </div>
     <!-- end header -->
-
+<!-- search area -->
+<!-- search area -->
+<div class="search-area" style="display: none;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                <div class="search-bar">
+                    <div class="search-bar-tablecell">
+                        <h3>Search For:</h3>
+                        <form id="search-form" method="get" action="{% url 'product_search_page' %}">
+                            <input type="text" id="search-input" name="q" placeholder="Type product name...">
+                            <button type="submit">Search <i class="fas fa-search"></i></button>
+                        </form>
+                        <div id="search-results" style="display: none;">
+                            <ul class="search-results-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end search area -->
+<!-- end search area -->
     {% block content %}{% endblock %}
 
     <!-- footer -->
@@ -185,6 +209,7 @@
     </div>
 
     <!-- scripts -->
+
     <script src="{% static 'assets/js/jquery-1.11.3.min.js' %}"></script>
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.countdown.js' %}"></script>
@@ -195,7 +220,74 @@
     <script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
     <script src="{% static 'assets/js/sticker.js' %}"></script>
     <script src="{% static 'assets/js/main.js' %}"></script>
+<script>
+$(document).ready(function() {
+    // Toggle search area
+    $('.search-bar-icon').on('click', function(e) {
+        e.preventDefault();
+        $('.search-area').fadeIn();
+        $('#search-input').focus();
+    });
 
+    // Close search area
+    $('.close-btn').on('click', function() {
+        $('.search-area').fadeOut();
+    });
+
+    // Live search functionality
+    $('#search-input').on('input', function() {
+        const query = $(this).val().trim();
+        const resultsContainer = $('#search-results');
+        const resultsList = $('.search-results-list');
+
+        if (query.length > 2) {
+            $.ajax({
+                url: '{% url "product_search_ajax" %}',
+                data: {
+                    'q': query
+                },
+                dataType: 'json',
+                success: function(data) {
+                    resultsList.empty();
+                    if (data.results.length > 0) {
+                        $.each(data.results, function(index, product) {
+                            resultsList.append(
+                                `<li>
+                                    <a href="${product.url}">
+                                        <img src="${product.image}" alt="${product.name}" width="50">
+                                        ${product.name} - $${product.price}
+                                    </a>
+                                </li>`
+                            );
+                        });
+                        resultsContainer.fadeIn();
+                    } else {
+                        resultsList.append('<li>No products found</li>');
+                        resultsContainer.fadeIn();
+                    }
+                }
+            });
+        } else {
+            resultsContainer.fadeOut();
+            resultsList.empty();
+        }
+    });
+
+    // Close when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search-bar, .search-bar-icon').length) {
+            $('.search-area').fadeOut();
+        }
+    });
+
+    // Prevent form submission if using live search
+    $('#search-form').on('submit', function(e) {
+        if ($('.search-results-list li').length > 0) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -5,11 +5,12 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-
+from django.http import JsonResponse
 from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm # We'll create this next
 from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import PasswordChangeView
+from django.db.models import Q
 
 # Create your views here.
 
@@ -139,6 +140,50 @@ def logout_view(request):
 
 def forgotpwd(request):
     return render(request, 'forgotpwd.html')
+
+#search function
+def product_search_page(request):
+    query = request.GET.get('q', '')
+    products = []
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )
+    return render(request, 'search_results.html', {'products': products, 'query': query})
+
+def product_search_ajax(request):
+    query = request.GET.get('q', '')
+    results = []
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )[:10]
+        results = [{
+            'name': product.name,
+            'price': product.price,
+            'image': product.image.url if product.image else '',
+            'url': product.get_absolute_url()
+        } for product in products]
+    return JsonResponse({'results': results})
+
+#singup messages
+# def signup_view(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             # Set last_login to None for new users
+#             user.last_login = None
+#             user.save()
+#
+#             messages.success(request, f'Account created successfully! Welcome, {user.username}!')
+#             return redirect('login')  # Redirect to login after signup
+#     else:
+#         form = UserCreationForm()  # Initialize empty form for GET requests
+#
+#     return render(request, 'signup.html', {'form': form})
 
 
 def contact_view(request):
