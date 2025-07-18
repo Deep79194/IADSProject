@@ -179,6 +179,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'app1.context_processors.cart_count',
             ],
+            'libraries': {
+                            'cart_extras': 'app1.templatetags.cart_extras',
+                        }
         },
     },
 ]

@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -5,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 
 from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm # We'll create this next
-from .models import ContactSubmission,Product,User, Cart, CartItem
+from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import PasswordChangeView
 
@@ -228,3 +230,25 @@ def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
     cart_item.delete()
     return redirect('cart')
+
+
+
+@login_required
+def checkout_view(request):
+    print("Checkout view accessed!")  # This will show in your console
+
+    cart = request.user.cart
+    subtotal = cart.total_price
+    tax = subtotal * Decimal('0.13')  # 13% tax
+    shipping = Decimal('45.00') if cart.items.count() > 0 else Decimal('0.00')
+    total = subtotal + tax + shipping
+
+    context = {
+        'cart': cart,
+        'subtotal': subtotal,
+        'tax': tax,
+        'shipping': shipping,
+        'total': total,
+    }
+
+    return render(request, 'checkout.html',context)
