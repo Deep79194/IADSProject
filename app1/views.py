@@ -6,8 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm # We'll create this next
-from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order
+from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm,BillingAddressForm, ShippingAddressForm # We'll create this next
+from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order, OrderItem
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import PasswordChangeView
 from django.db.models import Q
@@ -305,18 +305,162 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     return redirect('cart')
 
-
+#
+#
+# @login_required
+# def checkout_view(request):
+#     print("Checkout view accessed!")  # This will show in your console
+#
+#     cart = request.user.cart
+#     subtotal = cart.total_price
+#     tax = subtotal * Decimal('0.13')  # 13% tax
+#     shipping = Decimal('45.00') if cart.items.count() > 0 else Decimal('0.00')
+#     total = subtotal + tax + shipping
+#
+#     context = {
+#         'cart': cart,
+#         'subtotal': subtotal,
+#         'tax': tax,
+#         'shipping': shipping,
+#         'total': total,
+#     }
+#
+#     return render(request, 'checkout.html',context)
 
 @login_required
 def checkout_view(request):
-    print("Checkout view accessed!")  # This will show in your console
-
     cart = request.user.cart
+    cart_items = cart.items.all()
+
+    if not cart_items.exists():
+        messages.warning(request, "Your cart is empty!")
+        return redirect('cart')
+
+    # Calculate order totals
     subtotal = cart.total_price
-    tax = subtotal * Decimal('0.13')  # 13% tax
-    shipping = Decimal('45.00') if cart.items.count() > 0 else Decimal('0.00')
+    tax = subtotal * Decimal('0.13')
+    shipping = Decimal('45.00') if cart_items.count() > 0 else Decimal('0.00')
     total = subtotal + tax + shipping
 
+    if request.method == 'POST':
+        # Create billing address form instance
+        billing_data = {
+            'first_name': request.POST.get('billing_first_name'),
+            'last_name': request.POST.get('billing_last_name'),
+            'email': request.POST.get('billing_email'),
+            'phone': request.POST.get('billing_phone'),
+            'street_address': request.POST.get('billing_street_address'),
+            'apartment_address': request.POST.get('billing_apartment_address'),
+            'city': request.POST.get('billing_city'),
+            'state': request.POST.get('billing_state'),
+            'zip_code': request.POST.get('billing_zip'),
+            'country': request.POST.get('billing_country'),
+        }
+
+        # Validate required fields
+        required_fields = ['first_name', 'last_name', 'email', 'phone',
+                           'street_address', 'city', 'state', 'zip_code', 'country']
+
+        missing_fields = [field for field in required_fields if not billing_data.get(field)]
+        if missing_fields:
+            messages.error(request, f"Please fill in all required billing fields: {', '.join(missing_fields)}")
+            return redirect('checkout')
+
+        # Validate email format
+        from django.core.validators import validate_email
+        from django.core.exceptions import ValidationError
+        try:
+            validate_email(billing_data['email'])
+        except ValidationError:
+            messages.error(request, "Please enter a valid email address")
+            return redirect('checkout')
+
+        # If all validation passes, proceed with order creation
+        try:
+            # Create billing address
+            billing_address = BillingAddress.objects.create(
+                user=request.user,
+                **billing_data
+            )
+
+            # Handle shipping address
+            same_as_billing = request.POST.get('same_as_billing') == 'on'
+
+            if same_as_billing:
+                shipping_address = ShippingAddress.objects.create(
+                    user=request.user,
+                    first_name=billing_data['first_name'],
+                    last_name=billing_data['last_name'],
+                    phone=billing_data['phone'],
+                    street_address=billing_data['street_address'],
+                    apartment_address=billing_data['apartment_address'],
+                    city=billing_data['city'],
+                    state=billing_data['state'],
+                    zip_code=billing_data['zip_code'],
+                    country=billing_data['country'],
+                    notes=request.POST.get('shipping_notes', '')
+                )
+            else:
+                shipping_data = {
+                    'first_name': request.POST.get('shipping_first_name'),
+                    'last_name': request.POST.get('shipping_last_name'),
+                    'phone': request.POST.get('shipping_phone'),
+                    'street_address': request.POST.get('shipping_street_address'),
+                    'apartment_address': request.POST.get('shipping_apartment_address'),
+                    'city': request.POST.get('shipping_city'),
+                    'state': request.POST.get('shipping_state'),
+                    'zip_code': request.POST.get('shipping_zip'),
+                    'country': request.POST.get('shipping_country'),
+                    'notes': request.POST.get('shipping_notes', '')
+                }
+
+                # Validate shipping fields if not same as billing
+                shipping_missing = [field for field in required_fields
+                                    if field != 'email' and not shipping_data.get(field)]
+                if shipping_missing:
+                    messages.error(request,
+                                   f"Please fill in all required shipping fields: {', '.join(shipping_missing)}")
+                    return redirect('checkout')
+
+                shipping_address = ShippingAddress.objects.create(
+                    user=request.user,
+                    **shipping_data
+                )
+
+            # Create order
+            payment_method = request.POST.get('payment_method', 'credit_card')
+
+            order = Order.objects.create(
+                user=request.user,
+                billing_address=billing_address,
+                shipping_address=shipping_address,
+                payment_method=payment_method,
+                subtotal=subtotal,
+                tax=tax,
+                shipping_cost=shipping,
+                total=total
+            )
+
+            # Create order items
+            for cart_item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                    price=cart_item.price
+                )
+
+            # Clear the cart
+            cart.items.all().delete()
+
+            messages.success(request, f"Order #{order.order_number} placed successfully!")
+            return redirect('order_confirmation', order_id=order.id)
+
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('checkout')
+
+    # For GET requests
     context = {
         'cart': cart,
         'subtotal': subtotal,
@@ -325,4 +469,4 @@ def checkout_view(request):
         'total': total,
     }
 
-    return render(request, 'checkout.html',context)
+    return render(request, 'checkout.html', context)

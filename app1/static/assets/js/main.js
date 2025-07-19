@@ -166,3 +166,57 @@
 
 
 }(jQuery));
+
+
+$(document).ready(function() {
+    // Client-side validation
+    $('#checkoutForm').submit(function(e) {
+        let isValid = true;
+
+        // Validate billing address
+        $('[name^="billing_"]').each(function() {
+            if ($(this).prop('required') && !$(this).val()) {
+                $(this).addClass('is-invalid');
+                isValid = false;
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+        // Validate shipping address if not same as billing
+        if (!$('#sameAsBilling').is(':checked')) {
+            $('[name^="shipping_"]').each(function() {
+                if ($(this).prop('required') && !$(this).val() && $(this).attr('name') !== 'shipping_notes') {
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+        }
+
+        // Validate terms checkbox
+        if (!$('#agreeTerms').is(':checked')) {
+            $('#agreeTerms').addClass('is-invalid');
+            isValid = false;
+        } else {
+            $('#agreeTerms').removeClass('is-invalid');
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: $('.is-invalid').first().offset().top - 100
+            }, 500);
+        }
+    });
+
+    // Real-time validation
+    $('input, select').on('blur', function() {
+        if ($(this).prop('required') && !$(this).val()) {
+            $(this).addClass('is-invalid');
+        } else {
+            $(this).removeClass('is-invalid');
+        }
+    });
+});

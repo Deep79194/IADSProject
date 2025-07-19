@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm,UserChangeForm
 from django.contrib.auth import get_user_model
-from .models import User
+from .models import User,BillingAddress, ShippingAddress
+
 
 User = get_user_model()
 
@@ -34,3 +35,35 @@ class UserUpdateForm(UserChangeForm):
         super()._init_(*args, **kwargs)
         self.fields['profile_picture'].widget.attrs.update({'class': 'form-control-file'})
         self.fields.pop('password')  # Remove password field from the form
+
+
+
+class BillingAddressForm(forms.ModelForm):
+    class Meta:
+        model = BillingAddress
+        fields = ['first_name', 'last_name', 'email', 'phone',
+                  'street_address', 'apartment_address',
+                  'city', 'state', 'zip_code', 'country']
+        widgets = {
+            'apartment_address': forms.TextInput(attrs={'required': False}),
+        }
+
+
+class ShippingAddressForm(forms.ModelForm):
+    same_as_billing = forms.BooleanField(required=False, initial=False)
+
+    class Meta:
+        model = ShippingAddress
+        fields = ['first_name', 'last_name', 'phone',
+                  'street_address', 'apartment_address',
+                  'city', 'state', 'zip_code', 'country', 'notes']
+        widgets = {
+            'apartment_address': forms.TextInput(attrs={'required': False}),
+            'notes': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            if field != 'same_as_billing':
+                self.fields[field].required = False

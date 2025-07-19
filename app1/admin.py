@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, ContactSubmission,Product,Cart,CartItem,BillingAddress,ShippingAddress,Order
+from .models import User, ContactSubmission,Product,Cart,CartItem,BillingAddress, ShippingAddress, Order, OrderItem
 
 
 class CustomUserAdmin(UserAdmin):
@@ -16,3 +16,5 @@ admin.site.register(CartItem)
 admin.site.register(BillingAddress)
 admin.site.register(ShippingAddress)
 admin.site.register(Order)
+admin.site.register(OrderItem)
+

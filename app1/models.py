@@ -193,63 +193,93 @@ class CartItem(models.Model):
         return f"{self.quantity}x {self.product.name} in Cart #{self.cart.id}"
 
 
-# Add to your models.py
 class BillingAddress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    street_address = models.CharField(max_length=100)
-    apartment_address = models.CharField(max_length=100, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='billing_addresses')
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    street_address = models.CharField(max_length=255)
+    apartment_address = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    zip = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
     country = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15)
-    email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.email}'s billing address"
+        return f"{self.first_name} {self.last_name}, {self.city}"
+
 
 class ShippingAddress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    street_address = models.CharField(max_length=100)
-    apartment_address = models.CharField(max_length=100, blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='shipping_addresses')
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    street_address = models.CharField(max_length=255)
+    apartment_address = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    zip = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
     country = models.CharField(max_length=100)
-    shipping_notes = models.TextField(blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.email}'s shipping address"
+        return f"{self.first_name} {self.last_name}, {self.city}"
+
 
 class Order(models.Model):
-    ORDER_STATUS = [
+    PAYMENT_METHOD_CHOICES = [
+        ('credit_card', 'Credit Card'),
+        ('paypal', 'PayPal'),
+        ('cash_on_delivery', 'Cash on Delivery'),
+    ]
+
+    ORDER_STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('processing', 'Processing'),
-        ('completed', 'Completed'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='orders')
     order_number = models.CharField(max_length=20, unique=True)
-    billing_address = models.ForeignKey(BillingAddress, on_delete=models.SET_NULL, null=True)
-    shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.SET_NULL, null=True)
-    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, null=True)
+    billing_address = models.ForeignKey(BillingAddress, on_delete=models.PROTECT, related_name='billing_orders')
+    shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.PROTECT, related_name='shipping_orders')
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
     tax = models.DecimalField(max_digits=10, decimal_places=2)
-    shipping = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2)
     total = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
+    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Order #{self.order_number} - {self.user.email}"
+        return f"Order #{self.order_number}"
 
     def save(self, *args, **kwargs):
         if not self.order_number:
-            self.order_number = f"ORD-{timezone.now().strftime('%Y%m%d')}-{self.user.id}-{Order.objects.count() + 1}"
+            # Generate order number (you can customize this)
+            from datetime import datetime
+            self.order_number = f"ORD-{datetime.now().strftime('%Y%m%d')}-{self.user.id}-{Order.objects.count() + 1}"
         super().save(*args, **kwargs)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.quantity}x {self.product.name} (Order #{self.order.order_number})"
+
+    @property
+    def total_price(self):
+        return self.price * self.quantity
