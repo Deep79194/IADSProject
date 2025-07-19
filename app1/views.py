@@ -15,6 +15,9 @@ from django.db.models import Q
 # Create your views here.
 
 def home(request):
+    welcome_message = request.session.pop('welcome_message', None)
+    if welcome_message:
+        messages.success(request, welcome_message)
     return render(request, 'index.html')
 
 def about(request):
@@ -113,9 +116,12 @@ def login_view(request):
         form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            login(request, user)  # This creates the session
-            messages.success(request, f"Welcome back, {user.first_name}!")
-            return redirect('home')
+            login(request, user)
+            # Store the welcome message in session
+            request.session['welcome_message'] = f"Welcome back, {user.first_name}"
+            return redirect('home')  # Redirect to index/home page
+        else:
+            messages.error(request, "Invalid username or password")
     else:
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})

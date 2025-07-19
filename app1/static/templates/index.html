@@ -574,6 +574,15 @@
 {% block content %}
     <!-- hero area -->
     <div class="hero-area hero-bg">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
+                     style="position: fixed; top: 20px; right: 20px; z-index: 9999;width: 15%;height: 15%">
+                    {{ message }}
+<!--                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="container">
             <div class="row">
                 <div class="col-lg-9 offset-lg-2 text-center">
@@ -770,5 +779,17 @@
             </div>
         </div>
     </div>
+    <script>
+        // Auto-dismiss alerts after 3 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                }, 3000);  // 3000ms = 3 seconds
+            });
+        });
+    </script>
     <!-- end logo carousel -->
 {% endblock %}
