@@ -141,16 +141,18 @@ class ContactSubmission(models.Model):
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
-        ('strawberry', 'Strawberry'),
-        ('berry', 'Berry'),
-        ('lemon', 'Lemon'),
+        ('Organic Food', 'Organic Food'),
+        ('Household Items', 'Household Items'),
+        ('Reusable Products', 'Reusable Products'),
+        ('Eco Personal Care', 'Eco Personal Care'),
+        ('Green Gadgets', 'Green Gadgets'),
         ('other', 'Other'),
     ]
 
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=30, choices=CATEGORY_CHOICES)
     image = models.ImageField(upload_to='products/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

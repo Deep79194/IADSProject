@@ -30,13 +30,28 @@ def contact(request):
 #     return render(request, 'shop.html')
 
 
+# def shop(request):
+#     products = Product.objects.all()
+#     categories = dict(Product.CATEGORY_CHOICES)
+#
+#     context = {
+#         'products': products,
+#         'categories': categories,
+#     }
+#     return render(request, 'shop.html', context)
 def shop(request):
-    products = Product.objects.all()
-    categories = dict(Product.CATEGORY_CHOICES)
+    category = request.GET.get('category')  # Get the category from URL parameters
+
+    # Get all products or filter by category
+    if category and category in dict(Product.CATEGORY_CHOICES):
+        products = Product.objects.filter(category=category)
+    else:
+        products = Product.objects.all()
 
     context = {
         'products': products,
-        'categories': categories,
+        'categories': dict(Product.CATEGORY_CHOICES),
+        'selected_category': category,  # Pass the selected category to template
     }
     return render(request, 'shop.html', context)
 

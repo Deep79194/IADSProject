@@ -1,108 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<!-- title -->
-	<title>About</title>
+{% block title %}About Us{% endblock %}
 
-	<!-- favicon -->
-	<link rel="shortcut icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
-	<!-- google fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
-	<!-- fontawesome -->
-	<link rel="stylesheet" href="{% static 'assets/css/all.min.css' %}">
-	<!-- bootstrap -->
-	<link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
-	<!-- owl carousel -->
-	<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.css' %}">
-	<!-- magnific popup -->
-	<link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
-	<!-- animate css -->
-	<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
-	<!-- mean menu css -->
-	<link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
-	<!-- main style -->
-	<link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
-	<!-- responsive -->
-	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
-
-</head>
-<body>
-	
-	<!--PreLoader-->
-    <div class="loader">
-        <div class="loader-inner">
-            <div class="circle"></div>
-        </div>
-    </div>
-    <!--PreLoader Ends-->
-	
-	<!-- header -->
-	<div class="top-header-area" id="sticker">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 col-sm-12 text-center">
-					<div class="main-menu-wrap">
-						<!-- logo -->
-						<div class="site-logo">
-							<a href="{% url 'home' %}">
-								<img src="{% static 'assets/img/logo.png' %}" alt="">
-							</a>
-						</div>
-						<!-- logo -->
-
-						<!-- menu start -->
-						<nav class="main-menu">
-							<ul>
-								<li><a href="{% url 'home' %}">Home</a></li>
-								<li class="current-list-item"><a href="{% url 'about' %}">About</a></li>
-<!--                              <li><a href="#">Pages</a></li>-->
-								<li><a href="#">News</a></li>
-								<li><a href="{% url 'contact' %}">Contact</a></li>
-                              <li><a href="{% url 'shop' %}">Shop</a></li>
-								<!-- add more links as needed -->
-								<li>
-									<div class="header-icons">
-										<a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>
-										<a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-									</div>
-								</li>
-							</ul>
-						</nav>
-						<a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
-						<div class="mobile-menu"></div>
-						<!-- menu end -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end header -->
-
-	<!-- search area -->
-	<div class="search-area">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<span class="close-btn"><i class="fas fa-window-close"></i></span>
-					<div class="search-bar">
-						<div class="search-bar-tablecell">
-							<h3>Search For:</h3>
-							<input type="text" placeholder="Keywords">
-							<button type="submit">Search <i class="fas fa-search"></i></button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end search area -->
-
+{% block content %}
 	<!-- breadcrumb-section -->
 	<div class="breadcrumb-section breadcrumb-bg">
 		<div class="container">
@@ -127,6 +28,30 @@
 						<h2 class="pb-3">Why <span class="orange-text">Our Project</span></h2>
 						<div class="row">
 							<!-- Add your features here -->
+							<div class="col-lg-6 col-md-6 mb-4 mb-md-5">
+								<div class="single-feature">
+									<h4><i class="fas fa-leaf"></i> Eco-Friendly</h4>
+									<p>Our products are made with sustainable materials and processes.</p>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 mb-4 mb-md-5">
+								<div class="single-feature">
+									<h4><i class="fas fa-award"></i> Quality</h4>
+									<p>We maintain the highest standards in all our offerings.</p>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 mb-4 mb-md-5">
+								<div class="single-feature">
+									<h4><i class="fas fa-shipping-fast"></i> Fast Delivery</h4>
+									<p>Get your orders delivered quickly and efficiently.</p>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6 mb-4 mb-md-5">
+								<div class="single-feature">
+									<h4><i class="fas fa-headset"></i> Support</h4>
+									<p>Our team is always ready to help you with any questions.</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -134,52 +59,38 @@
 		</div>
 	</div>
 
-	<!-- footer -->
-	<div class="footer-area">
+	<!-- team section -->
+	<div class="mt-150 mb-150">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box about-widget">
-						<h2 class="widget-title">About us</h2>
-						<p>Short description about your project or team here.</p>
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">
+						<h3>Our <span class="orange-text">Team</span></h3>
+						<p>Meet the dedicated people behind our mission.</p>
 					</div>
 				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="footer-box get-in-touch">
-						<h2 class="widget-title">Get in Touch</h2>
-						<ul>
-							<li>123 Green Street, EcoCity</li>
-							<li>info@example.com</li>
-							<li>+00 111 222 3333</li>
-						</ul>
+			</div>
+			<div class="row">
+				<div class="col-lg-4 col-md-6">
+					<div class="single-team-item">
+						<div class="team-bg team-bg-1"></div>
+						<h4>John Smith <span>Founder</span></h4>
 					</div>
 				</div>
-				<!-- More footer boxes if needed -->
+				<div class="col-lg-4 col-md-6">
+					<div class="single-team-item">
+						<div class="team-bg team-bg-2"></div>
+						<h4>Sarah Johnson <span>Product Manager</span></h4>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="single-team-item">
+						<div class="team-bg team-bg-3"></div>
+						<h4>Michael Brown <span>Marketing Head</span></h4>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end footer -->
-	
-	<!-- jquery -->
-	<script src="{% static 'assets/js/jquery-1.11.3.min.js' %}"></script>
-	<!-- bootstrap -->
-	<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
-	<!-- count down -->
-	<script src="{% static 'assets/js/jquery.countdown.js' %}"></script>
-	<!-- isotope -->
-	<script src="{% static 'assets/js/jquery.isotope-3.0.6.min.js' %}"></script>
-	<!-- waypoints -->
-	<script src="{% static 'assets/js/waypoints.js' %}"></script>
-	<!-- owl carousel -->
-	<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
-	<!-- magnific popup -->
-	<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
-	<!-- mean menu -->
-	<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
-	<!-- sticker js -->
-	<script src="{% static 'assets/js/sticker.js' %}"></script>
-	<!-- main js -->
-	<script src="{% static 'assets/js/main.js' %}"></script>
-
-</body>
-</html>
+	<!-- end team section -->
+{% endblock %}
