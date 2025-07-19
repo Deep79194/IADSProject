@@ -417,63 +417,57 @@
 <!--            </div>-->
 <!--        </div>-->
 <!--    </div>-->
+
 <script>console.log(products)</script>
        <div class="product-section mt-150 mb-150">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-filters">
-                    <ul>
-                        <!-- All Products Link -->
-                        <li class="{% if not selected_category %}active{% endif %}">
-                            <a href="{% url 'shop' %}">All</a>
-                        </li>
-
-                        <!-- Category Filters -->
-                        {% for value, label in categories.items %}
-                        <li class="{% if selected_category == value %}active{% endif %}">
-                            <a href="{% url 'shop' %}?category={{ value|urlencode }}">{{ label }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="row product-lists">
-            {% for product in products %}
-            <div class="col-lg-4 col-md-6 text-center {{ product.category|slugify }}">
-                <div class="single-product-item">
-                    <div class="product-image">
-                        <a href="{% url 'product_detail' product.id %}">
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                        </a>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                            <div class="product-filters">
+                                <ul>
+                                    <li class="active" data-filter="*">All</li>
+                                    {% for value, label in categories.items %}
+                                    <li data-filter=".{{ value|slugify }}">{{ label }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <h3>{{ product.name }}</h3>
-                    <p class="product-price">
-                        <span>Per Kg</span>
-                        {% if product.discount_price %}
-                            <span class="original-price">${{ product.price }}</span>
-                            ${{ product.discount_price }}
-                        {% else %}
-                            ${{ product.price }}
-                        {% endif %}
-                    </p>
-                    <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </a>
                 </div>
+           <div class="container">
+                <div class="row product-lists">
+                    {% for product in products %}
+                    <div class="col-lg-4 col-md-6 text-center {{ product.category|slugify }}">
+                        <div class="single-product-item">
+                            <div class="product-image">
+                                <a href="{% url 'product_detail' product.id %}">
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                </a>
+                            </div>
+                            <h3>{{ product.name }}</h3>
+                            <p class="product-price">
+                                <span>Per Kg</span>
+                                {% if product.discount_price %}
+                                    <span class="original-price">${{ product.price }}</span>
+                                    ${{ product.discount_price }}
+                                {% else %}
+                                    ${{ product.price }}
+                                {% endif %}
+                            </p>
+                            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center">
+                        <p>No products found in this category.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+               </div>
             </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p>No products found in this category.</p>
-            </div>
-            {% endfor %}
-        </div>
-
-        <!-- Pagination remains the same -->
-    </div>
-</div>
+      </div>
     <!-- end products -->
 
     <!-- logo carousel -->
@@ -491,4 +485,29 @@
             </div>
         </div>
     </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.product-filters li');
+    const productItems = document.querySelectorAll('.product-lists .col-lg-4');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+
+            const filterValue = this.getAttribute('data-filter');
+
+            productItems.forEach(item => {
+                if (filterValue === '*' || item.classList.contains(filterValue.substring(1))) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock %}
