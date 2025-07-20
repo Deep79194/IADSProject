@@ -25,5 +25,8 @@ urlpatterns = [
     path('search/ajax/', views.product_search_ajax, name='product_search_ajax'),
     #checkout functionality
     path('checkout/', views.checkout_view, name='checkout'),
+    path('my-orders/', views.my_orders, name='my_orders'),
+    path('order/<int:order_id>/', views.order_detail, name='order_detail'),
+
 
 ]
