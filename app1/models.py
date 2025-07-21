@@ -283,3 +283,14 @@ class OrderItem(models.Model):
     @property
     def total_price(self):
         return self.price * self.quantity
+
+class Article(models.Model):
+    title         = models.CharField(max_length=500)
+    url           = models.URLField()
+    description   = models.TextField(blank=True)
+    image_url     = models.URLField(blank=True, null=True)
+    source        = models.CharField(max_length=100)
+    published_at  = models.DateTimeField(auto_now_add=True)
+
+    def _str_(self):
+        return f"{self.source}: {self.title[:50]}"

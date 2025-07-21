@@ -48,7 +48,7 @@
                                 </div>
                                 {% endif %}
 
-                                <form method="post" action="#">
+                                <form method="post" action="{% url 'forgotpwd' %}">
                                     {% csrf_token %}
 
                                     <!-- Email Field -->

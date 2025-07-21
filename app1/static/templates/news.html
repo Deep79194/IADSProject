@@ -1,0 +1,76 @@
+{# templates/news.html #}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}News – Fruitkha{% endblock %}
+
+{% block content %}
+  <!-- breadcrumb-section -->
+  <div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2 text-center">
+          <div class="breadcrumb-text">
+            <p>Organic Information</p>
+            <h1>News Article</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- latest news -->
+  <div class="latest-news mt-150 mb-150">
+    <div class="container">
+      <div class="row">
+        {% for a in articles %}
+          <div class="col-lg-4 col-md-6">
+            <div class="single-latest-news">
+              <a href="{{ a.url }}">
+                <img
+                  src="{{ a.image_url }}"
+                  alt="{{ a.title }}"
+                  style="display:block; width:100%; height:200px; object-fit:cover;"
+                />
+              </a>
+              <div class="news-text-box">
+                <h3><a href="{{ a.url }}">{{ a.title }}</a></h3>
+                <p class="blog-meta">
+                  <span class="author"><i class="fas fa-user"></i> {{ a.source }}</span>
+                  <span class="date"><i class="fas fa-calendar"></i> {{ a.published_at|date:"j F, Y" }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center">
+            <p>No eco-friendly news found.</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- pagination -->
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <div class="pagination-wrap">
+            <ul>
+              {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}">Prev</a></li>
+              {% endif %}
+              {% for num in paginator.page_range %}
+                <li>
+                  <a href="?page={{ num }}" class="{% if num == page_obj.number %}active{% endif %}">
+                    {{ num }}
+                  </a>
+                </li>
+              {% endfor %}
+              {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

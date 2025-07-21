@@ -11,6 +11,10 @@ from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddre
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import PasswordChangeView
 from django.db.models import Q
+import requests, xml.etree.ElementTree as ET
+from django.shortcuts import render
+from django.views.decorators.cache import cache_page
+from .models import Article
 
 # Create your views here.
 
@@ -480,3 +484,42 @@ def my_orders(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     return render(request, 'order_detail.html', {'order': order})
+
+def fetch_reddit():
+    try:
+        resp = requests.get(
+            "https://www.reddit.com/r/environment/.json",
+            headers={"User-Agent": "eco-news-bot"},
+            timeout=5
+        ).json()
+        out = []
+        for post in resp["data"]["children"]:
+            d = post["data"]
+            # try preview first
+            img = None
+            if d.get("preview") and d["preview"]["images"]:
+                img = d["preview"]["images"][0]["source"]["url"].replace("&amp;", "&")
+            elif d.get("thumbnail", "").startswith("http"):
+                img = d["thumbnail"]
+            # only include if we have a real URL
+            if img:
+                out.append(Article(
+                    title       = d["title"],
+                    url         = "https://reddit.com" + d["permalink"],
+                    description = "",
+                    image_url   = img,
+                    source      = "Reddit"
+                ))
+        return out
+    except Exception:
+        return []
+
+@cache_page(60 * 10)  # cache for 10 minutes
+def eco_news(request):
+    # wipe old and reload fresh
+    Article.objects.all().delete()
+    # fetch only Reddit (all are environmental) and only those with images
+    articles = fetch_reddit()
+    Article.objects.bulk_create(articles)
+    qs = Article.objects.order_by('-published_at')
+    return render(request, "news.html", {"articles": qs})
