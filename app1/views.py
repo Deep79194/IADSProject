@@ -1,12 +1,35 @@
-from decimal import Decimal
+# import random
+#
+# from decimal import Decimal
+#
+# from django.shortcuts import render, redirect, get_object_or_404
+# from django.contrib.auth import login, logout,get_user_model, authenticate
+# from django.contrib import messages
+# from django.contrib.auth.decorators import login_required
+# from django.urls import reverse_lazy
+# from django.http import JsonResponse
+# from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm,BillingAddressForm, ShippingAddressForm # We'll create this next
+# from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order, OrderItem
+# from django.shortcuts import render, get_object_or_404
+# from django.contrib.auth.views import PasswordChangeView
+# from django.db.models import Q
+# import requests, xml.etree.ElementTree as ET
+# from django.shortcuts import render
+# from django.views.decorators.cache import cache_page
+# from .models import Article
+# from django.core.mail import send_mail
+# from django.contrib.auth import get_user_model
+# from django.conf import settings
 
+from decimal import Decimal
+import random
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout,get_user_model, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm,BillingAddressForm, ShippingAddressForm # We'll create this next
+from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm,BillingAddressForm, ShippingAddressForm, EmailForm # We'll create this next
 from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order, OrderItem
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.views import PasswordChangeView
@@ -15,6 +38,11 @@ import requests, xml.etree.ElementTree as ET
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from .models import Article
+from django.core.mail import send_mail  # Add this import at the top
+from django.conf import settings
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import EmailForm
 
 # Create your views here.
 
@@ -171,8 +199,8 @@ def logout_view(request):
     return redirect('home')
 
 
-def forgotpwd(request):
-    return render(request, 'forgotpwd.html')
+# def forgotpwd(request):
+#     return render(request, 'forgotpwd.html')
 
 #search function
 def product_search_page(request):
@@ -523,3 +551,81 @@ def eco_news(request):
     Article.objects.bulk_create(articles)
     qs = Article.objects.order_by('-published_at')
     return render(request, "news.html", {"articles": qs})
+
+# forgot pwd otp model
+User = get_user_model()
+
+
+def forgotpwd(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            # Generate 6-digit OTP
+            otp = str(random.randint(100000, 999999))
+
+            # Store OTP in user's session
+            request.session['reset_otp'] = otp
+            request.session['reset_email'] = email
+            request.session.set_expiry(300)  # 5 minutes expiration
+
+            # Send email with OTP
+            send_mail(
+                'Password Reset OTP',
+                f'Your OTP for password reset is: {otp}',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+
+            return redirect('reset_password')
+        except User.DoesNotExist:
+            messages.error(request, 'No user found with this email address.')
+    return render(request, 'forgotpwd.html')
+
+
+def reset_password(request):
+    if 'reset_email' not in request.session:
+        return redirect('forgotpwd')
+
+    return render(request, 'reset_password.html', {
+        'email': request.session['reset_email']
+    })
+
+
+def reset_password_confirm(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        otp = request.POST.get('otp')
+        new_password1 = request.POST.get('new_password1')
+        new_password2 = request.POST.get('new_password2')
+
+        # Validate OTP
+        if ('reset_otp' not in request.session or
+                request.session['reset_otp'] != otp or
+                request.session['reset_email'] != email):
+            messages.error(request, 'Invalid or expired OTP')
+            return redirect('reset_password')
+
+        # Validate passwords match
+        if new_password1 != new_password2:
+            messages.error(request, 'Passwords do not match')
+            return redirect('reset_password')
+
+        # Update password
+        try:
+            user = User.objects.get(email=email)
+            user.set_password(new_password1)
+            user.save()
+
+            # Clean up session
+            del request.session['reset_otp']
+            del request.session['reset_email']
+
+            messages.success(request, 'Password updated successfully! Please login with your new password.')
+            return redirect('login')
+        except User.DoesNotExist:
+            messages.error(request, 'User not found')
+            return redirect('reset_password')
+
+    return redirect('forgotpwd')

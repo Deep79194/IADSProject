@@ -28,6 +28,8 @@ urlpatterns = [
     path('my-orders/', views.my_orders, name='my_orders'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
     path("news/", views.eco_news, name="eco_news"),
+    path('reset-password/', views.reset_password, name='reset_password'),
+    path('reset-password-confirm/', views.reset_password_confirm, name='reset_password_confirm'),
 
 
 ]

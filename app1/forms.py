@@ -67,3 +67,9 @@ class ShippingAddressForm(forms.ModelForm):
         for field in self.fields:
             if field != 'same_as_billing':
                 self.fields[field].required = False
+
+
+class EmailForm(forms.Form):
+    receiver = forms.EmailField(label='Receiver Email')
+    subject = forms.CharField(label='Subject', max_length=100)
+    body = forms.CharField(label='Message', widget=forms.Textarea)
