@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Fruitkha{% endblock %}</title>
+    <title>{% block title %}EchoHive{% endblock %}</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" type="image/png" href="{% static 'assets/img/favicon.png' %}">
@@ -25,15 +25,14 @@
     <!-- mean menu css -->
     <link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
     <!-- main style -->
-<!--    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">-->
-    <!-- responsive --><link rel="stylesheet" href="{% static 'assets/css/main.css' %}?v={% now 'U' %}">
-
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}?v={% now 'U' %}">
+    <!-- responsive -->
     <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% comment %} Preloader {% endcomment %}
+    <!-- Preloader -->
     <div class="loader">
         <div class="loader-inner">
             <div class="circle"></div>
@@ -49,7 +48,7 @@
                         <!-- logo -->
                         <div class="site-logo">
                             <a href="{% url 'home' %}">
-                                <img src="{% static 'assets/img/logo.png' %}" alt="">
+                                <img src="{% static 'assets/img/logo1.png' %}" alt="EchoHive Logo">
                             </a>
                         </div>
                         <!-- menu start -->
@@ -60,22 +59,8 @@
                                 <li class="{% if '/news/' in request.path %}current-list-item{% endif %}"><a href="{% url 'eco_news' %}">News</a></li>
                                 <li class="{% if request.path == '/contact/' %}current-list-item{% endif %}"><a href="{% url 'contact' %}">Contact</a></li>
                                 <li class="{% if request.path == '/shop/' %}current-list-item{% endif %}"><a href="{% url 'shop' %}">Shop</a></li>
-<!--                                <li>-->
-<!--                                    <div class="header-icons">-->
-<!--                                        <a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>-->
-<!--                                        <li><a class="shopping-cart-1" href="#"><i class="fas fa-user"></i></a>-->
-<!--											<ul class="sub-menu">-->
-<!--												<li><a href="{% url 'signup' %}">Signup</a></li>-->
-<!--												<li><a href="{% url 'login' %}">Signin</a></li>-->
-
-<!--											</ul>-->
-<!--										</li>-->
-<!--                                        <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>-->
-<!--                                    </div>-->
-<!--                                </li>-->
-                               <li>
+                                <li>
                                     <div class="header-icons">
-<!--                                        <a class="shopping-cart" href="#"><i class="fas fa-shopping-cart"></i></a>-->
                                         <a class="shopping-cart" href="{% url 'cart' %}">
                                             <i class="fas fa-shopping-cart"></i>
                                             {% if user.is_authenticated %}
@@ -106,7 +91,6 @@
                                         <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                                     </div>
                                 </li>
-
                             </ul>
                         </nav>
                         <div class="mobile-menu"></div>
@@ -117,31 +101,30 @@
         </div>
     </div>
     <!-- end header -->
-<!-- search area -->
-<!-- search area -->
-<div class="search-area" style="display: none;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <span class="close-btn"><i class="fas fa-window-close"></i></span>
-                <div class="search-bar">
-                    <div class="search-bar-tablecell">
-                        <h3>Search For:</h3>
-                        <form id="search-form" method="get" action="{% url 'product_search_page' %}">
-                            <input type="text" id="search-input" name="q" placeholder="Type product name...">
-                            <button type="submit">Search <i class="fas fa-search"></i></button>
-                        </form>
-                        <div id="search-results" style="display: none;">
-                            <ul class="search-results-list"></ul>
+
+    <!-- search area -->
+    <div class="search-area" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                    <div class="search-bar">
+                        <div class="search-bar-tablecell">
+                            <h3>Search For:</h3>
+                            <form id="search-form" method="get" action="{% url 'product_search_page' %}">
+                                <input type="text" id="search-input" name="q" placeholder="Type product name...">
+                                <button type="submit">Search <i class="fas fa-search"></i></button>
+                            </form>
+                            <div id="search-results" style="display: none;">
+                                <ul class="search-results-list"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- end search area -->
-<!-- end search area -->
+
     {% block content %}{% endblock %}
 
     <!-- footer -->
@@ -150,7 +133,7 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="footer-box about-widget">
-                        <h2 class="widget-title">About Us</h2>
+                        <h2 class="widget-title">About EchoHive</h2>
                         <p>We care about building sustainable solutions for a greener future.</p>
                     </div>
                 </div>
@@ -159,7 +142,7 @@
                         <h2 class="widget-title">Get in Touch</h2>
                         <ul>
                             <li>123 Green Street, EcoCity</li>
-                            <li>support@example.com</li>
+                            <li>support@echohive.com</li>
                             <li>+00 111 222 3333</li>
                         </ul>
                     </div>
@@ -193,7 +176,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <p>&copy; 2025 Fruitkha. All Rights Reserved.</p>
+                    <p>&copy; 2025 EchoHive. All Rights Reserved.</p>
                 </div>
                 <div class="col-lg-6 text-right col-md-12">
                     <div class="social-icons">
@@ -210,7 +193,6 @@
     </div>
 
     <!-- scripts -->
-
     <script src="{% static 'assets/js/jquery-1.11.3.min.js' %}"></script>
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.countdown.js' %}"></script>
@@ -221,74 +203,57 @@
     <script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
     <script src="{% static 'assets/js/sticker.js' %}"></script>
     <script src="{% static 'assets/js/main.js' %}"></script>
-<script>
-$(document).ready(function() {
-    // Toggle search area
-    $('.search-bar-icon').on('click', function(e) {
-        e.preventDefault();
-        $('.search-area').fadeIn();
-        $('#search-input').focus();
-    });
-
-    // Close search area
-    $('.close-btn').on('click', function() {
-        $('.search-area').fadeOut();
-    });
-
-    // Live search functionality
-    $('#search-input').on('input', function() {
-        const query = $(this).val().trim();
-        const resultsContainer = $('#search-results');
-        const resultsList = $('.search-results-list');
-
-        if (query.length > 2) {
-            $.ajax({
-                url: '{% url "product_search_ajax" %}',
-                data: {
-                    'q': query
-                },
-                dataType: 'json',
-                success: function(data) {
+    <script>
+        $(document).ready(function() {
+            $('.search-bar-icon').on('click', function(e) {
+                e.preventDefault();
+                $('.search-area').fadeIn();
+                $('#search-input').focus();
+            });
+            $('.close-btn').on('click', function() {
+                $('.search-area').fadeOut();
+            });
+            $('#search-input').on('input', function() {
+                const query = $(this).val().trim();
+                const resultsContainer = $('#search-results');
+                const resultsList = $('.search-results-list');
+                if (query.length > 2) {
+                    $.ajax({
+                        url: '{% url "product_search_ajax" %}',
+                        data: {'q': query},
+                        dataType: 'json',
+                        success: function(data) {
+                            resultsList.empty();
+                            if (data.results.length > 0) {
+                                $.each(data.results, function(index, product) {
+                                    resultsList.append(
+                                        `<li><a href="${product.url}"><img src="${product.image}" alt="${product.name}" width="50"> ${product.name} - $${product.price}</a></li>`
+                                    );
+                                });
+                                resultsContainer.fadeIn();
+                            } else {
+                                resultsList.append('<li>No products found</li>');
+                                resultsContainer.fadeIn();
+                            }
+                        }
+                    });
+                } else {
+                    resultsContainer.fadeOut();
                     resultsList.empty();
-                    if (data.results.length > 0) {
-                        $.each(data.results, function(index, product) {
-                            resultsList.append(
-                                `<li>
-                                    <a href="${product.url}">
-                                        <img src="${product.image}" alt="${product.name}" width="50">
-                                        ${product.name} - $${product.price}
-                                    </a>
-                                </li>`
-                            );
-                        });
-                        resultsContainer.fadeIn();
-                    } else {
-                        resultsList.append('<li>No products found</li>');
-                        resultsContainer.fadeIn();
-                    }
                 }
             });
-        } else {
-            resultsContainer.fadeOut();
-            resultsList.empty();
-        }
-    });
-
-    // Close when clicking outside
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.search-bar, .search-bar-icon').length) {
-            $('.search-area').fadeOut();
-        }
-    });
-
-    // Prevent form submission if using live search
-    $('#search-form').on('submit', function(e) {
-        if ($('.search-results-list li').length > 0) {
-            e.preventDefault();
-        }
-    });
-});
-</script>
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.search-bar, .search-bar-icon').length) {
+                    $('.search-area').fadeOut();
+                }
+            });
+            $('#search-form').on('submit', function(e) {
+                if ($('.search-results-list li').length > 0) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>
