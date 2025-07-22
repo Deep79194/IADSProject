@@ -1,0 +1,47 @@
+Thank you for your order!
+
+Order #{{ order.order_number }}
+Order Date: {{ order.created_at|date:"F j, Y" }}
+
+ORDER SUMMARY:
+
+{% for item in items %}
+- {{ item.product.name }}
+  Quantity: {{ item.quantity }}
+  Price: ${{ item.price }}
+  Total: ${{ item.total_price }}
+{% endfor %}
+
+SUBTOTAL: ${{ order.subtotal }}
+TAX (13%): ${{ order.tax }}
+SHIPPING: ${{ order.shipping_cost }}
+TOTAL: ${{ order.total }}
+
+SHIPPING ADDRESS:
+{{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}
+{{ order.shipping_address.street_address }}
+{% if order.shipping_address.apartment_address %}{{ order.shipping_address.apartment_address }}
+{% endif %}
+{{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip_code }}
+{{ order.shipping_address.country }}
+Phone: {{ order.shipping_address.phone }}
+{% if order.shipping_address.notes %}
+Delivery Notes: {{ order.shipping_address.notes }}
+{% endif %}
+
+BILLING ADDRESS:
+{{ order.billing_address.first_name }} {{ order.billing_address.last_name }}
+{{ order.billing_address.street_address }}
+{% if order.billing_address.apartment_address %}{{ order.billing_address.apartment_address }}
+{% endif %}
+{{ order.billing_address.city }}, {{ order.billing_address.state }} {{ order.billing_address.zip_code }}
+{{ order.billing_address.country }}
+Phone: {{ order.billing_address.phone }}
+Email: {{ order.billing_address.email }}
+
+PAYMENT METHOD:
+{{ order.get_payment_method_display }}
+
+If you have any questions about your order, please contact us at support@example.com
+
+© {{ current_year }} Your Company Name. All rights reserved.

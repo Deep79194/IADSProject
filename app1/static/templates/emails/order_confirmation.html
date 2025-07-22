@@ -1,0 +1,147 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<body>-->
+<!--    <h1>Thank you for your order!</h1>-->
+<!--    <p>Order #{{ order.order_number }}</p>-->
+<!--    &lt;!&ndash; More order details... &ndash;&gt;-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .order-details {
+            border: 1px solid #e9ecef;
+            border-radius: 0 0 5px 5px;
+            padding: 20px;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .totals {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .address {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="color: #28a745;">Thank you for your order!</h1>
+        <p>Your order #{{ order.order_number }} has been received and is being processed.</p>
+    </div>
+
+    <div class="order-details">
+        <h2>Order Summary</h2>
+
+        <h3>Items Ordered</h3>
+        {% for item in items %}
+        <div class="order-item">
+            <div>
+                <strong>{{ item.product.name }}</strong>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Price: ${{ item.price }}</p>
+            </div>
+            <div>
+                <strong>${{ item.total_price }}</strong>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="totals">
+            <div style="display: flex; justify-content: space-between;">
+                <span>Subtotal:</span>
+                <span>${{ order.subtotal }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span>Tax (13%):</span>
+                <span>${{ order.tax }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span>Shipping:</span>
+                <span>${{ order.shipping_cost }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; margin-top: 10px;">
+                <span>Total:</span>
+                <span>${{ order.total }}</span>
+            </div>
+        </div>
+
+        <div class="address">
+            <h3>Shipping Address</h3>
+            <p>
+                {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}<br>
+                {{ order.shipping_address.street_address }}<br>
+                {% if order.shipping_address.apartment_address %}
+                {{ order.shipping_address.apartment_address }}<br>
+                {% endif %}
+                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip_code }}<br>
+                {{ order.shipping_address.country }}<br>
+                Phone: {{ order.shipping_address.phone }}
+            </p>
+            {% if order.shipping_address.notes %}
+            <p><strong>Delivery Notes:</strong> {{ order.shipping_address.notes }}</p>
+            {% endif %}
+        </div>
+
+        <div class="address">
+            <h3>Billing Address</h3>
+            <p>
+                {{ order.billing_address.first_name }} {{ order.billing_address.last_name }}<br>
+                {{ order.billing_address.street_address }}<br>
+                {% if order.billing_address.apartment_address %}
+                {{ order.billing_address.apartment_address }}<br>
+                {% endif %}
+                {{ order.billing_address.city }}, {{ order.billing_address.state }} {{ order.billing_address.zip_code }}<br>
+                {{ order.billing_address.country }}<br>
+                Phone: {{ order.billing_address.phone }}<br>
+                Email: {{ order.billing_address.email }}
+            </p>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <h3>Payment Method</h3>
+            <p>{{ order.get_payment_method_display }}</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>If you have any questions about your order, please contact us at <a href="mailto:support@example.com">support@example.com</a></p>
+        <p>&copy; {{ current_year }} Your Company Name. All rights reserved.</p>
+    </div>
+</body>
+</html>

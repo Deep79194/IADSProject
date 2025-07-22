@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .order-details { margin-bottom: 30px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f5f5f5; }
+        .totals { text-align: right; margin-top: 20px; }
+        .footer { margin-top: 40px; text-align: center; font-size: 0.9em; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Thank you for your order!</h1>
+            <h2>Order #{{ order.order_number }}</h2>
+            <p>Order Date: {{ order.created_at|date:"F j, Y" }}</p>
+        </div>
+
+        <div class="order-details">
+            <h3>Order Summary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.price }}</td>
+                        <td>${{ item.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="totals">
+                <p><strong>Subtotal:</strong> ${{ order.subtotal }}</p>
+                <p><strong>Tax:</strong> ${{ order.tax }}</p>
+                <p><strong>Shipping:</strong> ${{ order.shipping_cost }}</p>
+                <p><strong>Total:</strong> ${{ order.total }}</p>
+            </div>
+        </div>
+
+        <div class="shipping-info">
+            <h3>Shipping Information</h3>
+            <p>
+                {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}<br>
+                {{ order.shipping_address.street_address }}<br>
+                {% if order.shipping_address.apartment_address %}
+                    {{ order.shipping_address.apartment_address }}<br>
+                {% endif %}
+                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip_code }}<br>
+                {{ order.shipping_address.country }}
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for shopping with {{ site_name }}!</p>
+            <p>If you have any questions, please contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+        </div>
+    </div>
+</body>
+</html>

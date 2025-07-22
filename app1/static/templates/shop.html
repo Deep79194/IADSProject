@@ -437,28 +437,53 @@
            <div class="container">
                 <div class="row product-lists">
                     {% for product in products %}
+<!--                    <div class="col-lg-4 col-md-6 text-center {{ product.category|slugify }}">-->
+<!--                        <div class="single-product-item">-->
+<!--                            <div class="product-image">-->
+<!--                                <a href="{% url 'product_detail' product.id %}">-->
+<!--                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <h3>{{ product.name }}</h3>-->
+<!--                            <p class="product-price">-->
+<!--                                <span>Per Kg</span>-->
+<!--                                {% if product.discount_price %}-->
+<!--                                    <span class="original-price">${{ product.price }}</span>-->
+<!--                                    ${{ product.discount_price }}-->
+<!--                                {% else %}-->
+<!--                                    ${{ product.price }}-->
+<!--                                {% endif %}-->
+<!--                            </p>-->
+<!--                            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">-->
+<!--                                <i class="fas fa-shopping-cart"></i> Add to Cart-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <div class="col-lg-4 col-md-6 text-center {{ product.category|slugify }}">
-                        <div class="single-product-item">
-                            <div class="product-image">
-                                <a href="{% url 'product_detail' product.id %}">
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                                </a>
-                            </div>
-                            <h3>{{ product.name }}</h3>
-                            <p class="product-price">
-                                <span>Per Kg</span>
-                                {% if product.discount_price %}
-                                    <span class="original-price">${{ product.price }}</span>
-                                    ${{ product.discount_price }}
-                                {% else %}
-                                    ${{ product.price }}
-                                {% endif %}
-                            </p>
-                            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
-                                <i class="fas fa-shopping-cart"></i> Add to Cart
-                            </a>
-                        </div>
-                    </div>
+    <div class="single-product-item" style="height: 400px; width: 100%;">
+        <div class="product-image" style="height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+            <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                     style="max-height: 100%; max-width: 100%; object-fit: contain;">
+            </a>
+        </div>
+        <div class="product-info" style="padding: 28px; height: 200px; display: flex; flex-direction: column; justify-content: space-between;">
+            <h3 style="margin: 5px 0; font-size: 18px; min-height: 40px;">{{ product.name }}</h3>
+            <p class="product-price" style="margin: 10px 0;">
+
+                {% if product.discount_price %}
+                    <span class="original-price" style="text-decoration: line-through; color: #999; margin-right: 5px;">${{ product.price }}</span>
+                    <span style="color: #F28123; font-weight: bold;">${{ product.discount_price }}</span>
+                {% else %}
+                    <span>${{ product.price }}</span>
+                {% endif %}
+            </p>
+            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn" style="margin-top: auto;">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+            </a>
+        </div>
+    </div>
+</div>
                     {% empty %}
                     <div class="col-12 text-center">
                         <p>No products found in this category.</p>
