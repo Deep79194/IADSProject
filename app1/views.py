@@ -61,10 +61,12 @@ COUNTRIES = [
 ]
 
 def home(request):
+    products = Product.objects.all()[:6]
+
     welcome_message = request.session.pop('welcome_message', None)
     if welcome_message:
         messages.success(request, welcome_message)
-    return render(request, 'index.html')
+    return render(request, 'index.html',{'products': products})
 
 def about(request):
     return render(request, 'about.html')

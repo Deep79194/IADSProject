@@ -1,39 +1,97 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results - Fruitkha{% endblock %}
 
 {% block content %}
-<div class="product-section mt-150 mb-150">
-    <div class="container">
-        <h2>Search Results for "{{ query }}"</h2>
-        {% if products %}
-            <div class="row product-lists">
-                {% for product in products %}
-                    <div class="col-lg-4 col-md-6 text-center">
-                        <div class="single-product-item">
-                            <div class="product-image">
-                                <a href="{% url 'product_detail' product.id %}">
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                                </a>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section breadcrumb-bg" style="padding: 100px 0; background-size: cover; background-position: center center; background-repeat: no-repeat; position: relative; color: #fff;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text" style="position: relative; z-index: 1;">
+                        <p style="margin: 0;">Search Results</p>
+                        <h1 style="font-size: 50px; margin-top: 15px;">"{{ query }}"</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- search results -->
+    <div class="product-section mt-150 mb-150" style="padding: 80px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 style="text-align: center; margin-bottom: 40px; color: #333; font-size: 28px;">Search Results for "{{ query }}"</h2>
+                    {% if products %}
+                        <div class="row product-lists" style="display: flex; flex-wrap: wrap; margin: 0 -15px;">
+                            {% for product in products %}
+                            <div class="col-lg-4 col-md-6 text-center" style="padding: 0 15px; margin-bottom: 30px;">
+                                <div class="single-product-item" style="height: 400px; width: 100%; border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column; background: #fff;">
+                                    <div class="product-image" style="height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #f9f9f9; padding: 15px;">
+                                        <a href="{% url 'product_detail' product.id %}">
+                                            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-height: 100%; max-width: 100%; object-fit: contain; transition: transform 0.3s;">
+                                        </a>
+                                    </div>
+                                    <div class="product-info" style="padding: 20px; height: 200px; display: flex; flex-direction: column; justify-content: space-between;">
+                                        <h3 style="margin: 0 0 10px; font-size: 18px; color: #333; min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ product.name }}</h3>
+                                        <p class="product-price" style="margin: 10px 0; font-size: 16px;">
+                                            <span style="color: #666; font-size: 14px; margin-right: 5px;">Per Kg</span>
+                                            {% if product.discount_price %}
+                                                <span class="original-price" style="text-decoration: line-through; color: #999; margin-right: 5px;">${{ product.price }}</span>
+                                                <span class="discount-price" style="color: #F28123; font-weight: bold;">${{ product.discount_price }}</span>
+                                            {% else %}
+                                                <span>${{ product.price }}</span>
+                                            {% endif %}
+                                        </p>
+                                        <a href="{% url 'add_to_cart' product.id %}" class="cart-btn" style="margin-top: 15px; display: inline-block; background-color: #F28123; color: #fff; padding: 8px 15px; border-radius: 4px; text-transform: uppercase; font-weight: 700; border: none; transition: all 0.3s; text-align: center; font-size: 14px;">
+                                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <h3>{{ product.name }}</h3>
-                            <p class="product-price">
-                                <span>Per Kg</span>
-                                {% if product.discount_price %}
-                                    <span class="original-price">${{ product.price }}</span>
-                                    ${{ product.discount_price }}
-                                {% else %}
-                                    ${{ product.price }}
-                                {% endif %}
-                            </p>
-                            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">
-                                <i class="fas fa-shopping-cart"></i> Add to Cart
-                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="no-results" style="padding: 50px 0; text-align: center;">
+                            <p style="font-size: 18px; margin-bottom: 20px; color: #555;">No products found matching your search.</p>
+                            <a href="{% url 'shop' %}" class="boxed-btn" style="display: inline-block; background-color: #F28123; color: #fff; padding: 12px 30px; border-radius: 4px; text-transform: uppercase; font-weight: 700; transition: all 0.3s; border: none;">Continue Shopping</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- logo carousel -->
+    <div class="logo-carousel-section" style="padding: 50px 0; background-color: #f9f9f9;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="single-logo-item">
+                            <img src="{% static 'assets/img/company-logos/1.png' %}" alt="Partner Logo" style="max-width: 150px; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;">
                         </div>
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        {% else %}
-            <p > No products found matching your search.</p>
-        {% endif %}
+        </div>
     </div>
-</div>
+
+    <script>
+    // Hover effects
+    document.querySelectorAll('.single-product-item').forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            this.style.transform = 'translateY(-5px)';
+            this.querySelector('.product-image img').style.transform = 'scale(1.05)';
+        });
+        item.addEventListener('mouseleave', function() {
+            this.style.boxShadow = 'none';
+            this.style.transform = 'none';
+            this.querySelector('.product-image img').style.transform = 'none';
+        });
+    });
+    </script>
 {% endblock %}
