@@ -1,26 +1,4 @@
-# import random
-#
-# from decimal import Decimal
-#
-# from django.shortcuts import render, redirect, get_object_or_404
-# from django.contrib.auth import login, logout,get_user_model, authenticate
-# from django.contrib import messages
-# from django.contrib.auth.decorators import login_required
-# from django.urls import reverse_lazy
-# from django.http import JsonResponse
-# from .forms import SimpleSignupForm, UserLoginForm ,UserUpdateForm,BillingAddressForm, ShippingAddressForm # We'll create this next
-# from .models import ContactSubmission,Product,User, Cart, CartItem, BillingAddress, ShippingAddress, Order, OrderItem
-# from django.shortcuts import render, get_object_or_404
-# from django.contrib.auth.views import PasswordChangeView
-# from django.db.models import Q
-# import requests, xml.etree.ElementTree as ET
-# from django.shortcuts import render
-# from django.views.decorators.cache import cache_page
-# from .models import Article
-# from django.core.mail import send_mail
-# from django.contrib.auth import get_user_model
-# from django.conf import settings
-from datetime import datetime
+
 from decimal import Decimal
 import random
 
@@ -74,34 +52,6 @@ def about(request):
 def contact(request):
     return render(request, 'contact.html')
 
-# def shop(request):
-#     return render(request, 'shop.html')
-
-
-# def shop(request):
-#     products = Product.objects.all()
-#     categories = dict(Product.CATEGORY_CHOICES)
-#
-#     context = {
-#         'products': products,
-#         'categories': categories,
-#     }
-#     return render(request, 'shop.html', context)
-# def shop(request):
-#     category = request.GET.get('category')  # Get the category from URL parameters
-#
-#     # Get all products or filter by category
-#     if category and category in dict(Product.CATEGORY_CHOICES):
-#         products = Product.objects.filter(category=category)
-#     else:
-#         products = Product.objects.all()
-#
-#     context = {
-#         'products': products,
-#         'categories': dict(Product.CATEGORY_CHOICES),
-#         'selected_category': category,  # Pass the selected category to template
-#     }
-#     return render(request, 'shop.html', context)
 def shop(request):
     products = Product.objects.all()
     categories = dict(Product.CATEGORY_CHOICES)
@@ -111,14 +61,7 @@ def shop(request):
         'categories': categories,
     }
     return render(request, 'shop.html', context)
-# def login(request):
-#     return render(request, 'login.html')
-#
-# def signup(request):
-#     return render(request, 'signup.html')
-#
-# def forgotpwd(request):
-#     return render(request, 'forgotpwd.html')
+
 
 def cart(request):
     return render(request, 'cart.html')
@@ -137,49 +80,6 @@ def product_detail(request, product_id):
 
 
 
-# Updated authentication views
-# def login_view(request):
-#     if request.method == 'POST':
-#         form = UserLoginForm(request, data=request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password')
-#             user = authenticate(username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 messages.success(request, f'Welcome back, {username}!')
-#                 next_url = request.GET.get('next', 'home')  # Redirect to 'next' or home
-#                 return redirect(next_url)
-#         messages.error(request, 'Invalid username or password')
-#     else:
-#         form = UserLoginForm()
-#
-#     context = {
-#         'form': form,
-#         'title': 'Login'
-#     }
-#     return render(request, 'login.html', context)
-#
-#
-# def signup_view(request):
-#     if request.method == 'POST':
-#         form = SimpleSignupForm(request.POST)
-#         if form.is_valid():
-#             try:
-#                 user = form.save()
-#                 login(request, user)
-#                 return redirect('home')  # Replace with your home URL name
-#             except IntegrityError:
-#                 form.add_error('username', 'This username is already taken')
-#     else:
-#         form = SimpleSignupForm()
-#
-#     return render(request, 'signup.html', {'form': form})
-#
-# def logout_view(request):
-#     logout(request)
-#     messages.success(request, 'You have been logged out.')
-#     return redirect('home')
 
 
 def login_view(request):
@@ -215,8 +115,7 @@ def logout_view(request):
     return redirect('home')
 
 
-# def forgotpwd(request):
-#     return render(request, 'forgotpwd.html')
+
 
 #search function
 def product_search_page(request):
@@ -245,22 +144,6 @@ def product_search_ajax(request):
         } for product in products]
     return JsonResponse({'results': results})
 
-#singup messages
-# def signup_view(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             # Set last_login to None for new users
-#             user.last_login = None
-#             user.save()
-#
-#             messages.success(request, f'Account created successfully! Welcome, {user.username}!')
-#             return redirect('login')  # Redirect to login after signup
-#     else:
-#         form = UserCreationForm()  # Initialize empty form for GET requests
-#
-#     return render(request, 'signup.html', {'form': form})
 
 
 def contact_view(request):
@@ -353,171 +236,6 @@ def remove_from_cart(request, item_id):
     cart_item.delete()
     return redirect('cart')
 
-#
-#
-# @login_required
-# def checkout_view(request):
-#     print("Checkout view accessed!")  # This will show in your console
-#
-#     cart = request.user.cart
-#     subtotal = cart.total_price
-#     tax = subtotal * Decimal('0.13')  # 13% tax
-#     shipping = Decimal('45.00') if cart.items.count() > 0 else Decimal('0.00')
-#     total = subtotal + tax + shipping
-#
-#     context = {
-#         'cart': cart,
-#         'subtotal': subtotal,
-#         'tax': tax,
-#         'shipping': shipping,
-#         'total': total,
-#     }
-#
-#     return render(request, 'checkout.html',context)
-
-# @login_required
-# def checkout_view(request):
-#     cart = request.user.cart
-#     cart_items = cart.items.all()
-#
-#     if not cart_items.exists():
-#         messages.warning(request, "Your cart is empty!")
-#         return redirect('cart')
-#
-#     # Calculate order totals
-#     subtotal = cart.total_price
-#     tax = subtotal * Decimal('0.13')
-#     shipping = Decimal('45.00') if cart_items.count() > 0 else Decimal('0.00')
-#     total = subtotal + tax + shipping
-#
-#     if request.method == 'POST':
-#         # Create billing address form instance
-#         billing_data = {
-#             'first_name': request.POST.get('billing_first_name'),
-#             'last_name': request.POST.get('billing_last_name'),
-#             'email': request.POST.get('billing_email'),
-#             'phone': request.POST.get('billing_phone'),
-#             'street_address': request.POST.get('billing_street_address'),
-#             'apartment_address': request.POST.get('billing_apartment_address'),
-#             'city': request.POST.get('billing_city'),
-#             'state': request.POST.get('billing_state'),
-#             'zip_code': request.POST.get('billing_zip'),
-#             'country': request.POST.get('billing_country'),
-#         }
-#
-#         # Validate required fields
-#         required_fields = ['first_name', 'last_name', 'email', 'phone',
-#                            'street_address', 'city', 'state', 'zip_code', 'country']
-#
-#         missing_fields = [field for field in required_fields if not billing_data.get(field)]
-#         if missing_fields:
-#             messages.error(request, f"Please fill in all required billing fields: {', '.join(missing_fields)}")
-#             return redirect('checkout')
-#
-#         # Validate email format
-#         from django.core.validators import validate_email
-#         from django.core.exceptions import ValidationError
-#         try:
-#             validate_email(billing_data['email'])
-#         except ValidationError:
-#             messages.error(request, "Please enter a valid email address")
-#             return redirect('checkout')
-#
-#         # If all validation passes, proceed with order creation
-#         try:
-#             # Create billing address
-#             billing_address = BillingAddress.objects.create(
-#                 user=request.user,
-#                 **billing_data
-#             )
-#
-#             # Handle shipping address
-#             same_as_billing = request.POST.get('same_as_billing') == 'on'
-#
-#             if same_as_billing:
-#                 shipping_address = ShippingAddress.objects.create(
-#                     user=request.user,
-#                     first_name=billing_data['first_name'],
-#                     last_name=billing_data['last_name'],
-#                     phone=billing_data['phone'],
-#                     street_address=billing_data['street_address'],
-#                     apartment_address=billing_data['apartment_address'],
-#                     city=billing_data['city'],
-#                     state=billing_data['state'],
-#                     zip_code=billing_data['zip_code'],
-#                     country=billing_data['country'],
-#                     notes=request.POST.get('shipping_notes', '')
-#                 )
-#             else:
-#                 shipping_data = {
-#                     'first_name': request.POST.get('shipping_first_name'),
-#                     'last_name': request.POST.get('shipping_last_name'),
-#                     'phone': request.POST.get('shipping_phone'),
-#                     'street_address': request.POST.get('shipping_street_address'),
-#                     'apartment_address': request.POST.get('shipping_apartment_address'),
-#                     'city': request.POST.get('shipping_city'),
-#                     'state': request.POST.get('shipping_state'),
-#                     'zip_code': request.POST.get('shipping_zip'),
-#                     'country': request.POST.get('shipping_country'),
-#                     'notes': request.POST.get('shipping_notes', '')
-#                 }
-#
-#                 # Validate shipping fields if not same as billing
-#                 shipping_missing = [field for field in required_fields
-#                                     if field != 'email' and not shipping_data.get(field)]
-#                 if shipping_missing:
-#                     messages.error(request,
-#                                    f"Please fill in all required shipping fields: {', '.join(shipping_missing)}")
-#                     return redirect('checkout')
-#
-#                 shipping_address = ShippingAddress.objects.create(
-#                     user=request.user,
-#                     **shipping_data
-#                 )
-#
-#             # Create order
-#             payment_method = request.POST.get('payment_method', 'credit_card')
-#
-#             order = Order.objects.create(
-#                 user=request.user,
-#                 billing_address=billing_address,
-#                 shipping_address=shipping_address,
-#                 payment_method=payment_method,
-#                 subtotal=subtotal,
-#                 tax=tax,
-#                 shipping_cost=shipping,
-#                 total=total
-#             )
-#
-#             # Create order items
-#             for cart_item in cart_items:
-#                 OrderItem.objects.create(
-#                     order=order,
-#                     product=cart_item.product,
-#                     quantity=cart_item.quantity,
-#                     price=cart_item.price
-#                 )
-#
-#             # Clear the cart
-#             cart.items.all().delete()
-#
-#             messages.success(request, f"Order #{order.order_number} placed successfully!")
-#             return redirect('order_confirmation', order_id=order.id)
-#
-#         except Exception as e:
-#             messages.error(request, f"An error occurred: {str(e)}")
-#             return redirect('checkout')
-#
-#     # For GET requests
-#     context = {
-#         'cart': cart,
-#         'subtotal': subtotal,
-#         'tax': tax,
-#         'shipping': shipping,
-#         'total': total,
-#     }
-#
-#     return render(request, 'checkout.html', context)
 
 logger = logging.getLogger(__name__)
 

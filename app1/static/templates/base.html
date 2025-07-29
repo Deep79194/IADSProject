@@ -24,10 +24,11 @@
     <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
     <!-- mean menu css -->
     <link rel="stylesheet" href="{% static 'assets/css/meanmenu.min.css' %}">
+
     <!-- main style -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}?v={% now 'U' %}">
     <!-- responsive -->
-    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}?v={% now 'U' %}">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -93,6 +94,7 @@
                                 </li>
                             </ul>
                         </nav>
+
                         <div class="mobile-menu"></div>
                         <!-- menu end -->
                     </div>
@@ -141,7 +143,7 @@
                     <div class="footer-box get-in-touch">
                         <h2 class="widget-title">Get in Touch</h2>
                         <ul>
-                            <li>123 Green Street, EcoCity</li>
+                            <li>University Of Windsor</li>
                             <li>support@echohive.com</li>
                             <li>+00 111 222 3333</li>
                         </ul>

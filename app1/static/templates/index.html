@@ -82,17 +82,7 @@
         </div>
 
         <div class="row">
-<!--            <div class="col-lg-4 col-md-6 text-center">-->
-<!--                <div class="single-product-item">-->
-<!--                    <div class="product-image">-->
-<!--                        <a href="single-product.html"><img src="{% static 'assets/img/products/product-img-1.jpg' %}" alt=""></a>-->
-<!--                    </div>-->
-<!--                    <h3>Reusable Straw Set</h3>-->
-<!--                    <p class="product-price"><span>Per Set</span> $12.99</p>-->
-<!--                    <a href="{% url 'cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
-<!--                </div>-->
-<!--            </div>-->
-            <!-- Add more product items here as needed -->
+
             <div class="row">
     {% for product in products|slice:":6" %}
     <div class="col-lg-4 col-md-6 text-center mb-4">
@@ -149,42 +139,6 @@
         </div>
     </div>
 </div>
-<!-- end product section -->
-
-<!-- cart banner section -->
-<!--<section class="cart-banner pt-100 pb-100">-->
-<!--    <div class="container">-->
-<!--        <div class="row clearfix">-->
-<!--            <div class="image-column col-lg-6">-->
-<!--                <div class="image">-->
-<!--                    <div class="price-box">-->
-<!--                        <div class="inner-price">-->
-<!--                            <span class="price">-->
-<!--                                <strong>30%</strong> <br> off all bamboo kits-->
-<!--                            </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <img src="{% static 'assets/img/a.jpg' %}" alt="">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="content-column col-lg-6">-->
-<!--                <h3><span class="orange-text">Deal</span> of the month</h3>-->
-<!--                <h4>Zero-Waste Starter Kit</h4>-->
-<!--                <div class="text">Join the green revolution with this all-in-one starter pack!</div>-->
-<!--                <div class="time-counter">-->
-<!--                    <div class="time-countdown clearfix" data-countdown="2025/12/01">-->
-<!--                        <div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div>-->
-<!--                        <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>-->
-<!--                        <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>-->
-<!--                        <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <a href="{% url 'shop' %}" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Shop Now</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
-<!-- end cart banner section -->
 
 <!-- about section -->
 <div class="abt-section mb-150">
@@ -208,76 +162,6 @@
 </div>
 <!-- end about section -->
 
-<!-- footer -->
-<div class="footer-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="footer-box about-widget">
-                    <h2 class="widget-title">About us</h2>
-                    <p>EchoHive is your partner in conscious living. Reusable, recyclable, and renewable products for a greener tomorrow.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="footer-box get-in-touch">
-                    <h2 class="widget-title">Get in Touch</h2>
-                    <ul>
-                        <li>123 Green Ave, Nature City</li>
-                        <li>support@echohive.com</li>
-                        <li>+00 111 222 3333</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="footer-box pages">
-                    <h2 class="widget-title">Pages</h2>
-                    <ul>
-                        <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'about' %}">About</a></li>
-                        <li><a href="{% url 'shop' %}">Shop</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="{% url 'contact' %}">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="footer-box subscribe">
-                    <h2 class="widget-title">Subscribe</h2>
-                    <p>Get exclusive updates on eco-friendly products and deals.</p>
-                    <form action="#">
-                        <input type="email" placeholder="Email">
-                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end footer -->
-
-<!-- copyright -->
-<div class="copyright">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <p>&copy; 2025 - EchoHive. All Rights Reserved.</p>
-            </div>
-            <div class="col-lg-6 text-right col-md-12">
-                <div class="social-icons">
-                    <ul>
-                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- JS auto-dismiss -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const alerts = document.querySelectorAll('.alert');
